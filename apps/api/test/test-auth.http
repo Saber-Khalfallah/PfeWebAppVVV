@@ -1,0 +1,88 @@
+### Register Admin User
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "password123",
+  "role": "administrator",
+  "name": "Admin User",
+  "contactInfo": "123-456-7890"
+}
+
+### Register Client User
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "client@example.com",
+  "password": "password123",
+  "role": "client",
+  "name": "Client User",
+  "contactInfo": "123-456-7890",
+  "location": "New York"
+}
+
+### Register Service Provider User
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "provider@example.com",
+  "password": "password123",
+  "role": "serviceProvider",
+  "name": "Provider Company",
+  "companyName": "Best Services Inc",
+  "contactInfo": "123-456-7890"
+}
+
+### Login as Admin
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "password123"
+}
+
+### Login as Client
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "client@example.com",
+  "password": "password123"
+}
+
+### Login as Service Provider
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "provider@example.com",
+  "password": "password123"
+}
+
+### Get Profile (Use token from login response)
+GET http://localhost:3000/api/auth/profile
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### Access Admin Only Data (Use admin token)
+GET http://localhost:3000/api/auth/admin-only
+Authorization: Bearer ADMIN_TOKEN_HERE
+
+### Access Client Only Data (Use client token)
+GET http://localhost:3000/api/auth/client-only
+Authorization: Bearer CLIENT_TOKEN_HERE
+
+### Access Provider Only Data (Use provider token)
+GET http://localhost:3000/api/auth/provider-only
+Authorization: Bearer PROVIDER_TOKEN_HERE
+
+### Refresh Token
+POST http://localhost:3000/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "YOUR_REFRESH_TOKEN_HERE"
+}

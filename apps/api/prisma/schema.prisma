@@ -1,0 +1,370 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum JobStatus {
+  OPEN        
+  IN_PROGRESS 
+  COMPLETED   
+  CANCELLED   
+  CLOSED      
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique // Common attribute for login
+  passwordHash  String?   // Hashed password for authentication
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  avatarUrl     String?   // Profile picture URL for all user types
+
+  // Relationships linking to specific role tables (1-to-0 or 1)
+  // A User can be at most one of these roles
+  administrator   Administrator?
+  client          Client?
+  serviceProvider ServiceProvider?
+
+  // Relationships where any user type can be involved (like messaging)
+  sentMessages    ChatMessage[] @relation("SentByUser")
+  receivedMessages ChatMessage[] @relation("ReceivedByUser")
+  sentRequests    JobRequest[] @relation("SentRequests")
+  receivedRequests JobRequest[] @relation("ReceivedRequests")
+  @@map("users") // Maps model name to table name
+}
+
+model Administrator {
+  userId        String    @id @unique // PK and FK to User
+  firstName          String
+  lastName           String
+  contactInfo   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id]) 
+  validatedServiceProviders ServiceProvider[] @relation("ValidatedByAdmin")
+
+  @@map("administrators")
+}
+
+model Client {
+  userId        String    @id @unique // PK and FK to User
+  firstName          String
+  lastName           String
+  contactInfo   String? // e.g., phone (email is in base User)
+  location      String? // e.g., city, address
+  registrationDate DateTime @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id])
+
+  jobs          Job[]
+
+  // One Client to Many Ratings/Reviews/Transactions
+  ratings       Rating[]
+  reviews       Review[]
+  transactions  Transaction[] @relation("ClientTransactions")
+
+  @@map("clients")
+}
+
+// ServiceProvider role: Specific attributes and a required link back to User
+model ServiceProvider {
+  // Core identity fields
+  userId        String    @id @unique // PK and FK to User
+  firstName     String
+  lastName      String
+  companyName   String? // Or individual name
+  contactInfo   String? // e.g., phone (email is in base User)
+  location      String? // e.g., city, address
+  
+  // Registration & validation
+  registrationDate DateTime @default(now())
+  isValidated   Boolean @default(false) // Admin validation flag
+  
+  // Profile fields (formerly in ServiceProviderProfile)
+  description   String?
+  experienceYears Int?
+  hourlyRate    Decimal? @db.Decimal(10, 2) // Use Decimal for currency
+  coverageArea  String? // More detailed area description
+  performanceStats Json? // Store stats (e.g., avg_rating, jobs_completed) as JSON
+  
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationship back to the base User
+  user          User      @relation(fields: [userId], references: [id])
+
+  // Existing relationships
+  assignedJobs  Job[]
+  ratings       Rating[]
+  reviews       Review[]
+  transactions  Transaction[] @relation("ProviderTransactions")
+  specialties   ProviderSpecialty[]
+  
+  // Media relationship (now direct)
+  media         ProfileMedia[] // Direct relationship to media
+
+  // Admin validation relationship
+  validatedById String?
+  validatedBy   Administrator? @relation("ValidatedByAdmin", fields: [validatedById], references: [userId])
+
+  @@map("service_providers")
+}
+
+
+// --- Service & Job Models ---
+
+model ServiceCategory {
+  id            String    @id @default(uuid())
+  name          String    @unique
+  description   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  // One Category to Many Jobs
+  jobs          Job[]
+  // One Service Category to Many ProviderSpecialties
+  providers     ProviderSpecialty[]
+
+  @@map("service_categories")
+}
+
+model ProviderSpecialty {
+  // Linking table for Many-to-Many between ServiceProvider and ServiceCategory
+  // Many Provider Specialties to One Service Provider
+  providerId    String // FK to ServiceProvider's userId
+  // Many Provider Specialties to One Service Category
+  categoryId    String // FK to ServiceCategory's id
+
+  // Relationships
+  provider      ServiceProvider @relation(fields: [providerId], references: [userId])
+  category      ServiceCategory @relation(fields: [categoryId], references: [id])
+
+  @@id([providerId, categoryId]) // Composite primary key
+  @@map("provider_specialties")
+}
+
+
+
+model ProfileMedia {
+  id            String    @id @default(uuid())
+  // Many Profile Media records belong to One Service Provider (direct relationship)
+  providerId    String // FK to ServiceProvider's userId
+
+  mediaUrl      String // Can store URL for photo or reel
+  mediaType     String // e.g., 'avatar', 'work_photo', 'work_reel'
+  caption       String?
+  isMainAvatar  Boolean @default(false) // Flag to indicate main profile picture
+  uploadedAt    DateTime  @default(now())
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Direct relationship to ServiceProvider
+  provider      ServiceProvider @relation(fields: [providerId], references: [userId])
+
+  @@map("profile_media")
+}
+
+
+model Job {
+  id            String    @id @default(uuid())
+  // Many Jobs belong to One Client
+  clientId      String // FK to Client's userId
+  // Many Jobs (optional) belong to One Service Provider
+  providerId    String? // Optional FK to ServiceProvider's userId
+  // Many Jobs belong to One Service Category
+  categoryId    String // FK to ServiceCategory's id
+
+  title         String
+  description   String
+  location      String? // Job location
+  requestedDatetime DateTime // When service is needed
+  status        String    @default("Open") // e.g., Open, Accepted, Completed, Cancelled
+  estimatedCost Decimal? @db.Decimal(10, 2)
+  actualCost    Decimal? @db.Decimal(10, 2) // Final agreed cost
+  completionDate DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  closedAt      DateTime? 
+  closedReason String?
+  // Relationships
+  client        Client          @relation(fields: [clientId], references: [userId])
+  provider      ServiceProvider? @relation(fields: [providerId], references: [userId]) // Optional relationship
+  category      ServiceCategory @relation(fields: [categoryId], references: [id])
+
+  // A job results in a rating, review, and transaction (One Job to Exactly One, optional)
+  rating        Rating?
+  review        Review?
+  transaction   Transaction?
+  media        JobMedia[]  // All media (photos/videos) for this job
+
+  // One Job to Many Chat Messages
+  messages      ChatMessage[]
+  jobRequests   JobRequest[] 
+  @@map("jobs")
+}
+model JobMedia {
+  id         String   @id @default(uuid())
+  jobId      String   // FK to Job's id
+  mediaUrl   String   // URL for photo
+  mediaType  String   
+  caption    String?
+  uploadedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  job        Job      @relation(fields: [jobId], references: [id])
+
+  @@map("job_media")
+}
+model JobRequest {
+  id          String    @id @default(uuid())
+  jobId       String // FK to Job
+  requesterId String // FK to User (who sent the request)
+  targetId    String // FK to User (who received the request)
+  
+  type        RequestType // CLIENT_TO_PROVIDER or PROVIDER_TO_CLIENT
+  status      RequestStatus @default(PENDING)
+  message     String? // Optional message with the request
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  respondedAt DateTime? // When request was accepted/rejected
+
+  // Relationships
+  job         Job @relation(fields: [jobId], references: [id])
+  requester   User @relation("SentRequests", fields: [requesterId], references: [id])
+  target      User @relation("ReceivedRequests", fields: [targetId], references: [id])
+
+  @@unique([jobId, requesterId, targetId]) // Prevent duplicate requests
+  @@map("job_requests")
+}
+
+enum RequestType {
+  CLIENT_TO_PROVIDER    // Client requests specific provider
+  PROVIDER_TO_CLIENT    // Provider applies to job
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+model Rating {
+  id            String    @id @default(uuid())
+  // Exactly One Rating (optional) belongs to One Job
+  jobId         String    @unique // Ensures only one rating record per job
+  // Many Ratings belong to One Client
+  clientId      String // FK to Client's userId who gave the rating
+  // Many Ratings belong to One Service Provider
+  providerId    String // FK to Provider's userId who received the rating
+
+  score         Int // e.g., 1-5
+  ratingDate    DateTime  @default(now())
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  job           Job           @relation(fields: [jobId], references: [id])
+  client        Client        @relation(fields: [clientId], references: [userId])
+  provider      ServiceProvider @relation(fields: [providerId], references: [userId])
+
+  @@map("ratings")
+}
+
+model Review {
+  id            String    @id @default(uuid())
+  // Exactly One Review (optional) belongs to One Job
+  jobId         String    @unique // Ensures only one review record per job
+  // Many Reviews belong to One Client
+  clientId      String // FK to Client's userId who wrote the review
+  // Many Reviews belong to One Service Provider
+  providerId    String // FK to Provider's userId who received the review
+
+  text          String
+  reviewDate    DateTime  @default(now())
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  job           Job           @relation(fields: [jobId], references: [id])
+  client        Client        @relation(fields: [clientId], references: [userId])
+  provider      ServiceProvider @relation(fields: [providerId], references: [userId])
+
+  @@map("reviews")
+}
+
+model Transaction {
+  id            String    @id @default(uuid())
+  // Exactly One Transaction (optional) belongs to One Job
+  jobId         String    @unique // Each transaction is for a specific job
+  // Many Transactions belong to One Client
+  clientId      String // FK to Client's userId who is paying
+  // Many Transactions belong to One Service Provider
+  providerId    String // FK to Provider's userId who is being paid
+
+  amount        Decimal  @db.Decimal(10, 2) // Transaction amount
+  transactionDate DateTime @default(now())
+  status        String    @default("Pending") // e.g., Pending, Successful, Failed
+  paymentMethodDetails Json? // Details about the payment method
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  job           Job           @relation(fields: [jobId], references: [id])
+  client        Client        @relation("ClientTransactions", fields: [clientId], references: [userId])
+  provider      ServiceProvider @relation("ProviderTransactions", fields: [providerId], references: [userId])
+
+  @@map("transactions")
+}
+
+
+// --- Communication Models ---
+
+model ChatMessage {
+  id            String    @id @default(uuid())
+  // Many Chat Messages belong to One Job
+  jobId         String // FK to Job's id
+
+  // Many Chat Messages are sent by One User
+  senderId      String // FK to User's ID who sent the message
+  // Many Chat Messages are received by One User
+  receiverId    String // FK to User's ID who received the message
+
+  text          String
+  timestamp     DateTime  @default(now())
+  isRead        Boolean   @default(false)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  job           Job @relation(fields: [jobId], references: [id])
+
+  // Link sender and receiver back to the base User model
+  sender        User @relation("SentByUser", fields: [senderId], references: [id])
+  receiver      User @relation("ReceivedByUser", fields: [receiverId], references: [id])
+
+  @@map("chat_messages")
+}
