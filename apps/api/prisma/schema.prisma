@@ -13,22 +13,34 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 enum JobStatus {
-  OPEN        
-  IN_PROGRESS 
-  COMPLETED   
-  CANCELLED   
-  CLOSED      
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  CLOSED
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique // Common attribute for login
-  passwordHash  String?   // Hashed password for authentication
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  avatarUrl     String?   // Profile picture URL for all user types
-
+  id              String           @id @default(uuid())
+  email           String           @unique // Common attribute for login
+  passwordHash    String? // Hashed password for authentication
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  avatarUrl       String? // Profile picture URL for all user types
+  isActive        Boolean          @default(true) // Soft delete flag
+  placeId          String? // Google Places ID
+  governorate      String? // Tunisia governorate (e.g., "ARIANA")
+  governorateAr    String? // Arabic name
+  delegation       String? // Delegation name
+  delegationAr     String? // Arabic delegation name
+  city             String? // Specific city/area name
+  state            String? // Keep for compatibility
+  country          String?  @default("Tunisia")
+  postalCode          String? // Postal code from your data
+  latitude         Float?
+  longitude        Float?
   // Relationships linking to specific role tables (1-to-0 or 1)
   // A User can be at most one of these roles
   administrator   Administrator?
@@ -36,45 +48,47 @@ model User {
   serviceProvider ServiceProvider?
 
   // Relationships where any user type can be involved (like messaging)
-  sentMessages    ChatMessage[] @relation("SentByUser")
+  sentMessages     ChatMessage[] @relation("SentByUser")
   receivedMessages ChatMessage[] @relation("ReceivedByUser")
-  sentRequests    JobRequest[] @relation("SentRequests")
-  receivedRequests JobRequest[] @relation("ReceivedRequests")
+  sentRequests     JobRequest[]  @relation("SentRequests")
+  receivedRequests JobRequest[]  @relation("ReceivedRequests")
+
   @@map("users") // Maps model name to table name
 }
 
 model Administrator {
-  userId        String    @id @unique // PK and FK to User
-  firstName          String
-  lastName           String
-  contactInfo   String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  userId      String   @id @unique // PK and FK to User
+  firstName   String
+  lastName    String
+  contactInfo String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  user          User      @relation(fields: [userId], references: [id]) 
+  user                      User              @relation(fields: [userId], references: [id])
   validatedServiceProviders ServiceProvider[] @relation("ValidatedByAdmin")
 
   @@map("administrators")
 }
 
 model Client {
-  userId        String    @id @unique // PK and FK to User
-  firstName          String
-  lastName           String
-  contactInfo   String? // e.g., phone (email is in base User)
-  location      String? // e.g., city, address
+  userId           String   @id @unique // PK and FK to User
+  firstName        String
+  lastName         String
+  location         String? // e.g., city, address
+  contactInfo      String? // e.g., phone (email is in base User)
+  
   registrationDate DateTime @default(now())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  user          User      @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
-  jobs          Job[]
+  jobs Job[]
 
   // One Client to Many Ratings/Reviews/Transactions
-  ratings       Rating[]
-  reviews       Review[]
-  transactions  Transaction[] @relation("ClientTransactions")
+  ratings      Rating[]
+  reviews      Review[]
+  transactions Transaction[] @relation("ClientTransactions")
 
   @@map("clients")
 }
@@ -82,40 +96,41 @@ model Client {
 // ServiceProvider role: Specific attributes and a required link back to User
 model ServiceProvider {
   // Core identity fields
-  userId        String    @id @unique // PK and FK to User
-  firstName     String
-  lastName      String
-  companyName   String? // Or individual name
-  contactInfo   String? // e.g., phone (email is in base User)
-  location      String? // e.g., city, address
-  
+  userId           String   @id @unique // PK and FK to User
+  firstName        String
+  lastName         String
+  companyName      String? // Or individual name
+  contactInfo      String? // e.g., phone (email is in base User)
+  location         String? // e.g., city, address
   // Registration & validation
   registrationDate DateTime @default(now())
-  isValidated   Boolean @default(false) // Admin validation flag
-  
+  isValidated      Boolean  @default(false) // Admin validation flag
+
   // Profile fields (formerly in ServiceProviderProfile)
-  description   String?
-  experienceYears Int?
-  hourlyRate    Decimal? @db.Decimal(10, 2) // Use Decimal for currency
-  coverageArea  String? // More detailed area description
+  description      String?
+  experienceYears  Int?
+  hourlyRate       Decimal?       @db.Decimal(10, 2) // Use Decimal for currency
+  coverageRadius   Float? // Coverage radius in km from their location
+  coverageType     CoverageType?  @default(RADIUS) // How they define coverage
+  providerAreas    ProviderArea[]
   performanceStats Json? // Store stats (e.g., avg_rating, jobs_completed) as JSON
-  
+
   // Timestamps
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relationship back to the base User
-  user          User      @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   // Existing relationships
-  assignedJobs  Job[]
-  ratings       Rating[]
-  reviews       Review[]
-  transactions  Transaction[] @relation("ProviderTransactions")
-  specialties   ProviderSpecialty[]
-  
+  assignedJobs Job[]
+  ratings      Rating[]
+  reviews      Review[]
+  transactions Transaction[]       @relation("ProviderTransactions")
+  specialties  ProviderSpecialty[]
+
   // Media relationship (now direct)
-  media         ProfileMedia[] // Direct relationship to media
+  media ProfileMedia[] // Direct relationship to media
 
   // Admin validation relationship
   validatedById String?
@@ -124,21 +139,51 @@ model ServiceProvider {
   @@map("service_providers")
 }
 
+model ProviderArea {
+  id            String   @id @default(uuid())
+  providerId    String // FK to ServiceProvider's userId
+  name          String // Area name (e.g., "Ariana Ville")
+  nameAr        String? // Arabic name
+  governorate   String // Governorate this area belongs to
+  governorateAr String? // Arabic governorate name
+  delegation    String? // Specific delegation if applicable
+  delegationAr  String? // Arabic delegation name
+  postalCode    String? // Postal code for this area
+  latitude      Float? // Area center latitude
+  longitude     Float? // Area center longitude
+  isActive      Boolean  @default(true)
+  distance      Float? // Distance from provider's base (calculated)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  provider ServiceProvider @relation(fields: [providerId], references: [userId], onDelete: Cascade)
+
+  @@index([governorate])
+  @@index([providerId])
+  @@index([postalCode])
+  @@map("provider_areas")
+}
+
+enum CoverageType {
+  RADIUS // Circular coverage from provider's base location
+  AREAS // Specific governorates/delegations selected
+  CUSTOM // Custom polygon (future enhancement)
+}
 
 // --- Service & Job Models ---
 
 model ServiceCategory {
-  id            String    @id @default(uuid())
-  name          String    @unique
-  description   String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relationships
   // One Category to Many Jobs
-  jobs          Job[]
+  jobs      Job[]
   // One Service Category to Many ProviderSpecialties
-  providers     ProviderSpecialty[]
+  providers ProviderSpecialty[]
 
   @@map("service_categories")
 }
@@ -146,119 +191,126 @@ model ServiceCategory {
 model ProviderSpecialty {
   // Linking table for Many-to-Many between ServiceProvider and ServiceCategory
   // Many Provider Specialties to One Service Provider
-  providerId    String // FK to ServiceProvider's userId
+  providerId String // FK to ServiceProvider's userId
   // Many Provider Specialties to One Service Category
-  categoryId    String // FK to ServiceCategory's id
+  categoryId String // FK to ServiceCategory's id
 
   // Relationships
-  provider      ServiceProvider @relation(fields: [providerId], references: [userId])
-  category      ServiceCategory @relation(fields: [categoryId], references: [id])
+  provider ServiceProvider @relation(fields: [providerId], references: [userId])
+  category ServiceCategory @relation(fields: [categoryId], references: [id])
 
   @@id([providerId, categoryId]) // Composite primary key
   @@map("provider_specialties")
 }
 
-
-
 model ProfileMedia {
-  id            String    @id @default(uuid())
+  id         String @id @default(uuid())
   // Many Profile Media records belong to One Service Provider (direct relationship)
-  providerId    String // FK to ServiceProvider's userId
+  providerId String // FK to ServiceProvider's userId
 
-  mediaUrl      String // Can store URL for photo or reel
-  mediaType     String // e.g., 'avatar', 'work_photo', 'work_reel'
-  caption       String?
-  isMainAvatar  Boolean @default(false) // Flag to indicate main profile picture
-  uploadedAt    DateTime  @default(now())
+  mediaUrl     String // Can store URL for photo or reel
+  mediaType    String // e.g., 'avatar', 'work_photo', 'work_reel'
+  caption      String?
+  isMainAvatar Boolean  @default(false) // Flag to indicate main profile picture
+  uploadedAt   DateTime @default(now())
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Direct relationship to ServiceProvider
-  provider      ServiceProvider @relation(fields: [providerId], references: [userId])
+  provider ServiceProvider @relation(fields: [providerId], references: [userId])
 
   @@map("profile_media")
 }
 
-
 model Job {
-  id            String    @id @default(uuid())
+  id         String  @id @default(uuid())
   // Many Jobs belong to One Client
-  clientId      String // FK to Client's userId
+  clientId   String // FK to Client's userId
   // Many Jobs (optional) belong to One Service Provider
-  providerId    String? // Optional FK to ServiceProvider's userId
+  providerId String? // Optional FK to ServiceProvider's userId
   // Many Jobs belong to One Service Category
-  categoryId    String // FK to ServiceCategory's id
+  categoryId String // FK to ServiceCategory's id
 
-  title         String
-  description   String
-  location      String? // Job location
+  title             String
+  description       String
+  governorate      String? // Tunisia governorate (e.g., "ARIANA")
+  governorateAr    String? // Arabic name
+  delegation       String? // Delegation name
+  delegationAr    String? // Arabic delegation name
+  country          String?  @default("Tunisia")
+  postalCode          String? // Postal code from your data
+  latitude         Float?
+  longitude        Float?    // Job location
   requestedDatetime DateTime // When service is needed
-  status        String    @default("Open") // e.g., Open, Accepted, Completed, Cancelled
-  estimatedCost Decimal? @db.Decimal(10, 2)
-  actualCost    Decimal? @db.Decimal(10, 2) // Final agreed cost
-  completionDate DateTime?
+  status            String    @default("Open") // e.g., Open, Accepted, Completed, Cancelled
+  estimatedCost     Decimal?  @db.Decimal(10, 2)
+  actualCost        Decimal?  @db.Decimal(10, 2) // Final agreed cost
+  completionDate    DateTime?
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  closedAt      DateTime? 
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  closedAt     DateTime?
   closedReason String?
   // Relationships
-  client        Client          @relation(fields: [clientId], references: [userId])
-  provider      ServiceProvider? @relation(fields: [providerId], references: [userId]) // Optional relationship
-  category      ServiceCategory @relation(fields: [categoryId], references: [id])
+  client       Client           @relation(fields: [clientId], references: [userId])
+  provider     ServiceProvider? @relation(fields: [providerId], references: [userId]) // Optional relationship
+  category     ServiceCategory  @relation(fields: [categoryId], references: [id])
 
   // A job results in a rating, review, and transaction (One Job to Exactly One, optional)
-  rating        Rating?
-  review        Review?
-  transaction   Transaction?
-  media        JobMedia[]  // All media (photos/videos) for this job
+  rating      Rating?
+  review      Review?
+  transaction Transaction?
+  media       JobMedia[] // All media (photos/videos) for this job
 
   // One Job to Many Chat Messages
-  messages      ChatMessage[]
-  jobRequests   JobRequest[] 
+  messages    ChatMessage[]
+  jobRequests JobRequest[]
+
   @@map("jobs")
 }
+
 model JobMedia {
   id         String   @id @default(uuid())
-  jobId      String   // FK to Job's id
-  mediaUrl   String   // URL for photo
-  mediaType  String   
+  jobId      String // FK to Job's id
+  mediaUrl   String // URL for photo
+  mediaType  String
   caption    String?
   uploadedAt DateTime @default(now())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  job        Job      @relation(fields: [jobId], references: [id])
+  job Job @relation(fields: [jobId], references: [id])
 
   @@map("job_media")
 }
+
 model JobRequest {
-  id          String    @id @default(uuid())
+  id          String @id @default(uuid())
   jobId       String // FK to Job
   requesterId String // FK to User (who sent the request)
   targetId    String // FK to User (who received the request)
-  
-  type        RequestType // CLIENT_TO_PROVIDER or PROVIDER_TO_CLIENT
-  status      RequestStatus @default(PENDING)
-  message     String? // Optional message with the request
-  
+
+  type    RequestType // CLIENT_TO_PROVIDER or PROVIDER_TO_CLIENT
+  status  RequestStatus @default(PENDING)
+  message String? // Optional message with the request
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   respondedAt DateTime? // When request was accepted/rejected
 
   // Relationships
-  job         Job @relation(fields: [jobId], references: [id])
-  requester   User @relation("SentRequests", fields: [requesterId], references: [id])
-  target      User @relation("ReceivedRequests", fields: [targetId], references: [id])
+  job       Job  @relation(fields: [jobId], references: [id])
+  requester User @relation("SentRequests", fields: [requesterId], references: [id])
+  target    User @relation("ReceivedRequests", fields: [targetId], references: [id])
 
   @@unique([jobId, requesterId, targetId]) // Prevent duplicate requests
   @@map("job_requests")
 }
 
 enum RequestType {
-  CLIENT_TO_PROVIDER    // Client requests specific provider
-  PROVIDER_TO_CLIENT    // Provider applies to job
+  CLIENT_TO_PROVIDER // Client requests specific provider
+  PROVIDER_TO_CLIENT // Provider applies to job
 }
 
 enum RequestStatus {
@@ -269,102 +321,101 @@ enum RequestStatus {
 }
 
 model Rating {
-  id            String    @id @default(uuid())
+  id         String @id @default(uuid())
   // Exactly One Rating (optional) belongs to One Job
-  jobId         String    @unique // Ensures only one rating record per job
+  jobId      String @unique // Ensures only one rating record per job
   // Many Ratings belong to One Client
-  clientId      String // FK to Client's userId who gave the rating
+  clientId   String // FK to Client's userId who gave the rating
   // Many Ratings belong to One Service Provider
-  providerId    String // FK to Provider's userId who received the rating
+  providerId String // FK to Provider's userId who received the rating
 
-  score         Int // e.g., 1-5
-  ratingDate    DateTime  @default(now())
+  score      Int // e.g., 1-5
+  ratingDate DateTime @default(now())
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relationships
-  job           Job           @relation(fields: [jobId], references: [id])
-  client        Client        @relation(fields: [clientId], references: [userId])
-  provider      ServiceProvider @relation(fields: [providerId], references: [userId])
+  job      Job             @relation(fields: [jobId], references: [id])
+  client   Client          @relation(fields: [clientId], references: [userId])
+  provider ServiceProvider @relation(fields: [providerId], references: [userId])
 
   @@map("ratings")
 }
 
 model Review {
-  id            String    @id @default(uuid())
+  id         String @id @default(uuid())
   // Exactly One Review (optional) belongs to One Job
-  jobId         String    @unique // Ensures only one review record per job
+  jobId      String @unique // Ensures only one review record per job
   // Many Reviews belong to One Client
-  clientId      String // FK to Client's userId who wrote the review
+  clientId   String // FK to Client's userId who wrote the review
   // Many Reviews belong to One Service Provider
-  providerId    String // FK to Provider's userId who received the review
+  providerId String // FK to Provider's userId who received the review
 
-  text          String
-  reviewDate    DateTime  @default(now())
+  text       String
+  reviewDate DateTime @default(now())
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relationships
-  job           Job           @relation(fields: [jobId], references: [id])
-  client        Client        @relation(fields: [clientId], references: [userId])
-  provider      ServiceProvider @relation(fields: [providerId], references: [userId])
+  job      Job             @relation(fields: [jobId], references: [id])
+  client   Client          @relation(fields: [clientId], references: [userId])
+  provider ServiceProvider @relation(fields: [providerId], references: [userId])
 
   @@map("reviews")
 }
 
 model Transaction {
-  id            String    @id @default(uuid())
+  id         String @id @default(uuid())
   // Exactly One Transaction (optional) belongs to One Job
-  jobId         String    @unique // Each transaction is for a specific job
+  jobId      String @unique // Each transaction is for a specific job
   // Many Transactions belong to One Client
-  clientId      String // FK to Client's userId who is paying
+  clientId   String // FK to Client's userId who is paying
   // Many Transactions belong to One Service Provider
-  providerId    String // FK to Provider's userId who is being paid
+  providerId String // FK to Provider's userId who is being paid
 
-  amount        Decimal  @db.Decimal(10, 2) // Transaction amount
-  transactionDate DateTime @default(now())
-  status        String    @default("Pending") // e.g., Pending, Successful, Failed
+  amount               Decimal  @db.Decimal(10, 2) // Transaction amount
+  transactionDate      DateTime @default(now())
+  status               String   @default("Pending") // e.g., Pending, Successful, Failed
   paymentMethodDetails Json? // Details about the payment method
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relationships
-  job           Job           @relation(fields: [jobId], references: [id])
-  client        Client        @relation("ClientTransactions", fields: [clientId], references: [userId])
-  provider      ServiceProvider @relation("ProviderTransactions", fields: [providerId], references: [userId])
+  job      Job             @relation(fields: [jobId], references: [id])
+  client   Client          @relation("ClientTransactions", fields: [clientId], references: [userId])
+  provider ServiceProvider @relation("ProviderTransactions", fields: [providerId], references: [userId])
 
   @@map("transactions")
 }
 
-
 // --- Communication Models ---
 
 model ChatMessage {
-  id            String    @id @default(uuid())
+  id    String @id @default(uuid())
   // Many Chat Messages belong to One Job
-  jobId         String // FK to Job's id
+  jobId String // FK to Job's id
 
   // Many Chat Messages are sent by One User
-  senderId      String // FK to User's ID who sent the message
+  senderId   String // FK to User's ID who sent the message
   // Many Chat Messages are received by One User
-  receiverId    String // FK to User's ID who received the message
+  receiverId String // FK to User's ID who received the message
 
-  text          String
-  timestamp     DateTime  @default(now())
-  isRead        Boolean   @default(false)
+  text      String
+  timestamp DateTime @default(now())
+  isRead    Boolean  @default(false)
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relationships
-  job           Job @relation(fields: [jobId], references: [id])
+  job Job @relation(fields: [jobId], references: [id])
 
   // Link sender and receiver back to the base User model
-  sender        User @relation("SentByUser", fields: [senderId], references: [id])
-  receiver      User @relation("ReceivedByUser", fields: [receiverId], references: [id])
+  sender   User @relation("SentByUser", fields: [senderId], references: [id])
+  receiver User @relation("ReceivedByUser", fields: [receiverId], references: [id])
 
   @@map("chat_messages")
 }

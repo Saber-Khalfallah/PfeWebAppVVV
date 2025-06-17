@@ -14,7 +14,7 @@ const SignInPage = () => {
             Welcome Back
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Sign in to your Local Service Finder account
+            Sign in to your Account
           </p>
         </div>
 

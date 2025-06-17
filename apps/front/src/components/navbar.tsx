@@ -5,6 +5,7 @@ import { LuLogOut } from "react-icons/lu";
 
 import SignInPanel from "./signInPanel";
 import Profile from "./profile";
+import NotificationBell from "./NotificationBell";
 
 type Props = {
   isScrollDown: boolean;
@@ -54,13 +55,17 @@ const Navbar = ({ isScrollDown, session }: Props) => {
 "
         >
           {/* Link components will be simpler now */}
-          <Link href="/">Home</Link>
-          <Link href="/find-a-pro">Find a Pro</Link>
-          <Link href="/about-us">About Us</Link>
-          <Link href="/blog">Blog</Link>
+          {/* <Link href="/">Moderate Users</Link> */}
+          <Link href="/user/jobs">My Projects</Link>
+          <Link href="/user/create-project">Publish a new project</Link>
+          {/* <Link href="/about-us">About Us</Link>
+          <Link href="/blog">Blog</Link> */}
         </div>
         {session && session.user ? (
-          <Profile user={session.user} />
+          <div className="flex items-center space-x-4">
+            <NotificationBell count={0} /> {/* Add your actual notification count */}
+            <Profile user={session.user} />
+          </div>
         ) : (
           <SignInPanel isScrollDown={isScrollDown} />
         )}

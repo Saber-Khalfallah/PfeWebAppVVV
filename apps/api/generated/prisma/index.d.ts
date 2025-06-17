@@ -34,6 +34,11 @@ export type Client = $Result.DefaultSelection<Prisma.$ClientPayload>
  */
 export type ServiceProvider = $Result.DefaultSelection<Prisma.$ServiceProviderPayload>
 /**
+ * Model ProviderArea
+ * 
+ */
+export type ProviderArea = $Result.DefaultSelection<Prisma.$ProviderAreaPayload>
+/**
  * Model ServiceCategory
  * 
  */
@@ -99,6 +104,15 @@ export namespace $Enums {
 export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus]
 
 
+export const CoverageType: {
+  RADIUS: 'RADIUS',
+  AREAS: 'AREAS',
+  CUSTOM: 'CUSTOM'
+};
+
+export type CoverageType = (typeof CoverageType)[keyof typeof CoverageType]
+
+
 export const RequestType: {
   CLIENT_TO_PROVIDER: 'CLIENT_TO_PROVIDER',
   PROVIDER_TO_CLIENT: 'PROVIDER_TO_CLIENT'
@@ -121,6 +135,10 @@ export type RequestStatus = (typeof RequestStatus)[keyof typeof RequestStatus]
 export type JobStatus = $Enums.JobStatus
 
 export const JobStatus: typeof $Enums.JobStatus
+
+export type CoverageType = $Enums.CoverageType
+
+export const CoverageType: typeof $Enums.CoverageType
 
 export type RequestType = $Enums.RequestType
 
@@ -294,6 +312,16 @@ export class PrismaClient<
     * ```
     */
   get serviceProvider(): Prisma.ServiceProviderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.providerArea`: Exposes CRUD operations for the **ProviderArea** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProviderAreas
+    * const providerAreas = await prisma.providerArea.findMany()
+    * ```
+    */
+  get providerArea(): Prisma.ProviderAreaDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.serviceCategory`: Exposes CRUD operations for the **ServiceCategory** model.
@@ -838,6 +866,7 @@ export namespace Prisma {
     Administrator: 'Administrator',
     Client: 'Client',
     ServiceProvider: 'ServiceProvider',
+    ProviderArea: 'ProviderArea',
     ServiceCategory: 'ServiceCategory',
     ProviderSpecialty: 'ProviderSpecialty',
     ProfileMedia: 'ProfileMedia',
@@ -866,7 +895,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "administrator" | "client" | "serviceProvider" | "serviceCategory" | "providerSpecialty" | "profileMedia" | "job" | "jobMedia" | "jobRequest" | "rating" | "review" | "transaction" | "chatMessage"
+      modelProps: "user" | "administrator" | "client" | "serviceProvider" | "providerArea" | "serviceCategory" | "providerSpecialty" | "profileMedia" | "job" | "jobMedia" | "jobRequest" | "rating" | "review" | "transaction" | "chatMessage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1163,6 +1192,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ServiceProviderCountArgs<ExtArgs>
             result: $Utils.Optional<ServiceProviderCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProviderArea: {
+        payload: Prisma.$ProviderAreaPayload<ExtArgs>
+        fields: Prisma.ProviderAreaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProviderAreaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProviderAreaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload>
+          }
+          findFirst: {
+            args: Prisma.ProviderAreaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProviderAreaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload>
+          }
+          findMany: {
+            args: Prisma.ProviderAreaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload>[]
+          }
+          create: {
+            args: Prisma.ProviderAreaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload>
+          }
+          createMany: {
+            args: Prisma.ProviderAreaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProviderAreaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload>[]
+          }
+          delete: {
+            args: Prisma.ProviderAreaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload>
+          }
+          update: {
+            args: Prisma.ProviderAreaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProviderAreaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProviderAreaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProviderAreaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProviderAreaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderAreaPayload>
+          }
+          aggregate: {
+            args: Prisma.ProviderAreaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProviderArea>
+          }
+          groupBy: {
+            args: Prisma.ProviderAreaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProviderAreaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProviderAreaCountArgs<ExtArgs>
+            result: $Utils.Optional<ProviderAreaCountAggregateOutputType> | number
           }
         }
       }
@@ -1994,6 +2097,7 @@ export namespace Prisma {
     administrator?: AdministratorOmit
     client?: ClientOmit
     serviceProvider?: ServiceProviderOmit
+    providerArea?: ProviderAreaOmit
     serviceCategory?: ServiceCategoryOmit
     providerSpecialty?: ProviderSpecialtyOmit
     profileMedia?: ProfileMediaOmit
@@ -2245,6 +2349,7 @@ export namespace Prisma {
    */
 
   export type ServiceProviderCountOutputType = {
+    providerAreas: number
     assignedJobs: number
     ratings: number
     reviews: number
@@ -2254,6 +2359,7 @@ export namespace Prisma {
   }
 
   export type ServiceProviderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    providerAreas?: boolean | ServiceProviderCountOutputTypeCountProviderAreasArgs
     assignedJobs?: boolean | ServiceProviderCountOutputTypeCountAssignedJobsArgs
     ratings?: boolean | ServiceProviderCountOutputTypeCountRatingsArgs
     reviews?: boolean | ServiceProviderCountOutputTypeCountReviewsArgs
@@ -2271,6 +2377,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the ServiceProviderCountOutputType
      */
     select?: ServiceProviderCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ServiceProviderCountOutputType without action
+   */
+  export type ServiceProviderCountOutputTypeCountProviderAreasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProviderAreaWhereInput
   }
 
   /**
@@ -2415,8 +2528,20 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -2426,6 +2551,18 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     avatarUrl: string | null
+    isActive: boolean | null
+    placeId: string | null
+    governorate: string | null
+    governorateAr: string | null
+    delegation: string | null
+    delegationAr: string | null
+    city: string | null
+    state: string | null
+    country: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2435,6 +2572,18 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     avatarUrl: string | null
+    isActive: boolean | null
+    placeId: string | null
+    governorate: string | null
+    governorateAr: string | null
+    delegation: string | null
+    delegationAr: string | null
+    city: string | null
+    state: string | null
+    country: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2444,9 +2593,31 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     avatarUrl: number
+    isActive: number
+    placeId: number
+    governorate: number
+    governorateAr: number
+    delegation: number
+    delegationAr: number
+    city: number
+    state: number
+    country: number
+    postalCode: number
+    latitude: number
+    longitude: number
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    latitude?: true
+    longitude?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    latitude?: true
+    longitude?: true
+  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -2455,6 +2626,18 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     avatarUrl?: true
+    isActive?: true
+    placeId?: true
+    governorate?: true
+    governorateAr?: true
+    delegation?: true
+    delegationAr?: true
+    city?: true
+    state?: true
+    country?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2464,6 +2647,18 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     avatarUrl?: true
+    isActive?: true
+    placeId?: true
+    governorate?: true
+    governorateAr?: true
+    delegation?: true
+    delegationAr?: true
+    city?: true
+    state?: true
+    country?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2473,6 +2668,18 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     avatarUrl?: true
+    isActive?: true
+    placeId?: true
+    governorate?: true
+    governorateAr?: true
+    delegation?: true
+    delegationAr?: true
+    city?: true
+    state?: true
+    country?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
     _all?: true
   }
 
@@ -2514,6 +2721,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -2544,6 +2763,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -2555,7 +2776,21 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     avatarUrl: string | null
+    isActive: boolean
+    placeId: string | null
+    governorate: string | null
+    governorateAr: string | null
+    delegation: string | null
+    delegationAr: string | null
+    city: string | null
+    state: string | null
+    country: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -2581,6 +2816,18 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     avatarUrl?: boolean
+    isActive?: boolean
+    placeId?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    city?: boolean
+    state?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
     administrator?: boolean | User$administratorArgs<ExtArgs>
     client?: boolean | User$clientArgs<ExtArgs>
     serviceProvider?: boolean | User$serviceProviderArgs<ExtArgs>
@@ -2598,6 +2845,18 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     avatarUrl?: boolean
+    isActive?: boolean
+    placeId?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    city?: boolean
+    state?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2607,6 +2866,18 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     avatarUrl?: boolean
+    isActive?: boolean
+    placeId?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    city?: boolean
+    state?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2616,9 +2887,21 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     avatarUrl?: boolean
+    isActive?: boolean
+    placeId?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    city?: boolean
+    state?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "createdAt" | "updatedAt" | "avatarUrl", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "createdAt" | "updatedAt" | "avatarUrl" | "isActive" | "placeId" | "governorate" | "governorateAr" | "delegation" | "delegationAr" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     administrator?: boolean | User$administratorArgs<ExtArgs>
     client?: boolean | User$clientArgs<ExtArgs>
@@ -2650,6 +2933,18 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       avatarUrl: string | null
+      isActive: boolean
+      placeId: string | null
+      governorate: string | null
+      governorateAr: string | null
+      delegation: string | null
+      delegationAr: string | null
+      city: string | null
+      state: string | null
+      country: string | null
+      postalCode: string | null
+      latitude: number | null
+      longitude: number | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3086,6 +3381,18 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly avatarUrl: FieldRef<"User", 'String'>
+    readonly isActive: FieldRef<"User", 'Boolean'>
+    readonly placeId: FieldRef<"User", 'String'>
+    readonly governorate: FieldRef<"User", 'String'>
+    readonly governorateAr: FieldRef<"User", 'String'>
+    readonly delegation: FieldRef<"User", 'String'>
+    readonly delegationAr: FieldRef<"User", 'String'>
+    readonly city: FieldRef<"User", 'String'>
+    readonly state: FieldRef<"User", 'String'>
+    readonly country: FieldRef<"User", 'String'>
+    readonly postalCode: FieldRef<"User", 'String'>
+    readonly latitude: FieldRef<"User", 'Float'>
+    readonly longitude: FieldRef<"User", 'Float'>
   }
     
 
@@ -4760,8 +5067,8 @@ export namespace Prisma {
     userId: string | null
     firstName: string | null
     lastName: string | null
-    contactInfo: string | null
     location: string | null
+    contactInfo: string | null
     registrationDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4771,8 +5078,8 @@ export namespace Prisma {
     userId: string | null
     firstName: string | null
     lastName: string | null
-    contactInfo: string | null
     location: string | null
+    contactInfo: string | null
     registrationDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4782,8 +5089,8 @@ export namespace Prisma {
     userId: number
     firstName: number
     lastName: number
-    contactInfo: number
     location: number
+    contactInfo: number
     registrationDate: number
     createdAt: number
     updatedAt: number
@@ -4795,8 +5102,8 @@ export namespace Prisma {
     userId?: true
     firstName?: true
     lastName?: true
-    contactInfo?: true
     location?: true
+    contactInfo?: true
     registrationDate?: true
     createdAt?: true
     updatedAt?: true
@@ -4806,8 +5113,8 @@ export namespace Prisma {
     userId?: true
     firstName?: true
     lastName?: true
-    contactInfo?: true
     location?: true
+    contactInfo?: true
     registrationDate?: true
     createdAt?: true
     updatedAt?: true
@@ -4817,8 +5124,8 @@ export namespace Prisma {
     userId?: true
     firstName?: true
     lastName?: true
-    contactInfo?: true
     location?: true
+    contactInfo?: true
     registrationDate?: true
     createdAt?: true
     updatedAt?: true
@@ -4901,8 +5208,8 @@ export namespace Prisma {
     userId: string
     firstName: string
     lastName: string
-    contactInfo: string | null
     location: string | null
+    contactInfo: string | null
     registrationDate: Date
     createdAt: Date
     updatedAt: Date
@@ -4929,8 +5236,8 @@ export namespace Prisma {
     userId?: boolean
     firstName?: boolean
     lastName?: boolean
-    contactInfo?: boolean
     location?: boolean
+    contactInfo?: boolean
     registrationDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4946,8 +5253,8 @@ export namespace Prisma {
     userId?: boolean
     firstName?: boolean
     lastName?: boolean
-    contactInfo?: boolean
     location?: boolean
+    contactInfo?: boolean
     registrationDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4958,8 +5265,8 @@ export namespace Prisma {
     userId?: boolean
     firstName?: boolean
     lastName?: boolean
-    contactInfo?: boolean
     location?: boolean
+    contactInfo?: boolean
     registrationDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4970,14 +5277,14 @@ export namespace Prisma {
     userId?: boolean
     firstName?: boolean
     lastName?: boolean
-    contactInfo?: boolean
     location?: boolean
+    contactInfo?: boolean
     registrationDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "contactInfo" | "location" | "registrationDate" | "createdAt" | "updatedAt", ExtArgs["result"]["client"]>
+  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "location" | "contactInfo" | "registrationDate" | "createdAt" | "updatedAt", ExtArgs["result"]["client"]>
   export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     jobs?: boolean | Client$jobsArgs<ExtArgs>
@@ -5006,8 +5313,8 @@ export namespace Prisma {
       userId: string
       firstName: string
       lastName: string
-      contactInfo: string | null
       location: string | null
+      contactInfo: string | null
       registrationDate: Date
       createdAt: Date
       updatedAt: Date
@@ -5442,8 +5749,8 @@ export namespace Prisma {
     readonly userId: FieldRef<"Client", 'String'>
     readonly firstName: FieldRef<"Client", 'String'>
     readonly lastName: FieldRef<"Client", 'String'>
-    readonly contactInfo: FieldRef<"Client", 'String'>
     readonly location: FieldRef<"Client", 'String'>
+    readonly contactInfo: FieldRef<"Client", 'String'>
     readonly registrationDate: FieldRef<"Client", 'DateTime'>
     readonly createdAt: FieldRef<"Client", 'DateTime'>
     readonly updatedAt: FieldRef<"Client", 'DateTime'>
@@ -5972,11 +6279,13 @@ export namespace Prisma {
   export type ServiceProviderAvgAggregateOutputType = {
     experienceYears: number | null
     hourlyRate: Decimal | null
+    coverageRadius: number | null
   }
 
   export type ServiceProviderSumAggregateOutputType = {
     experienceYears: number | null
     hourlyRate: Decimal | null
+    coverageRadius: number | null
   }
 
   export type ServiceProviderMinAggregateOutputType = {
@@ -5991,7 +6300,8 @@ export namespace Prisma {
     description: string | null
     experienceYears: number | null
     hourlyRate: Decimal | null
-    coverageArea: string | null
+    coverageRadius: number | null
+    coverageType: $Enums.CoverageType | null
     createdAt: Date | null
     updatedAt: Date | null
     validatedById: string | null
@@ -6009,7 +6319,8 @@ export namespace Prisma {
     description: string | null
     experienceYears: number | null
     hourlyRate: Decimal | null
-    coverageArea: string | null
+    coverageRadius: number | null
+    coverageType: $Enums.CoverageType | null
     createdAt: Date | null
     updatedAt: Date | null
     validatedById: string | null
@@ -6027,7 +6338,8 @@ export namespace Prisma {
     description: number
     experienceYears: number
     hourlyRate: number
-    coverageArea: number
+    coverageRadius: number
+    coverageType: number
     performanceStats: number
     createdAt: number
     updatedAt: number
@@ -6039,11 +6351,13 @@ export namespace Prisma {
   export type ServiceProviderAvgAggregateInputType = {
     experienceYears?: true
     hourlyRate?: true
+    coverageRadius?: true
   }
 
   export type ServiceProviderSumAggregateInputType = {
     experienceYears?: true
     hourlyRate?: true
+    coverageRadius?: true
   }
 
   export type ServiceProviderMinAggregateInputType = {
@@ -6058,7 +6372,8 @@ export namespace Prisma {
     description?: true
     experienceYears?: true
     hourlyRate?: true
-    coverageArea?: true
+    coverageRadius?: true
+    coverageType?: true
     createdAt?: true
     updatedAt?: true
     validatedById?: true
@@ -6076,7 +6391,8 @@ export namespace Prisma {
     description?: true
     experienceYears?: true
     hourlyRate?: true
-    coverageArea?: true
+    coverageRadius?: true
+    coverageType?: true
     createdAt?: true
     updatedAt?: true
     validatedById?: true
@@ -6094,7 +6410,8 @@ export namespace Prisma {
     description?: true
     experienceYears?: true
     hourlyRate?: true
-    coverageArea?: true
+    coverageRadius?: true
+    coverageType?: true
     performanceStats?: true
     createdAt?: true
     updatedAt?: true
@@ -6200,7 +6517,8 @@ export namespace Prisma {
     description: string | null
     experienceYears: number | null
     hourlyRate: Decimal | null
-    coverageArea: string | null
+    coverageRadius: number | null
+    coverageType: $Enums.CoverageType | null
     performanceStats: JsonValue | null
     createdAt: Date
     updatedAt: Date
@@ -6238,11 +6556,13 @@ export namespace Prisma {
     description?: boolean
     experienceYears?: boolean
     hourlyRate?: boolean
-    coverageArea?: boolean
+    coverageRadius?: boolean
+    coverageType?: boolean
     performanceStats?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     validatedById?: boolean
+    providerAreas?: boolean | ServiceProvider$providerAreasArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     assignedJobs?: boolean | ServiceProvider$assignedJobsArgs<ExtArgs>
     ratings?: boolean | ServiceProvider$ratingsArgs<ExtArgs>
@@ -6266,7 +6586,8 @@ export namespace Prisma {
     description?: boolean
     experienceYears?: boolean
     hourlyRate?: boolean
-    coverageArea?: boolean
+    coverageRadius?: boolean
+    coverageType?: boolean
     performanceStats?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6287,7 +6608,8 @@ export namespace Prisma {
     description?: boolean
     experienceYears?: boolean
     hourlyRate?: boolean
-    coverageArea?: boolean
+    coverageRadius?: boolean
+    coverageType?: boolean
     performanceStats?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6308,15 +6630,17 @@ export namespace Prisma {
     description?: boolean
     experienceYears?: boolean
     hourlyRate?: boolean
-    coverageArea?: boolean
+    coverageRadius?: boolean
+    coverageType?: boolean
     performanceStats?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     validatedById?: boolean
   }
 
-  export type ServiceProviderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "companyName" | "contactInfo" | "location" | "registrationDate" | "isValidated" | "description" | "experienceYears" | "hourlyRate" | "coverageArea" | "performanceStats" | "createdAt" | "updatedAt" | "validatedById", ExtArgs["result"]["serviceProvider"]>
+  export type ServiceProviderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "companyName" | "contactInfo" | "location" | "registrationDate" | "isValidated" | "description" | "experienceYears" | "hourlyRate" | "coverageRadius" | "coverageType" | "performanceStats" | "createdAt" | "updatedAt" | "validatedById", ExtArgs["result"]["serviceProvider"]>
   export type ServiceProviderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    providerAreas?: boolean | ServiceProvider$providerAreasArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     assignedJobs?: boolean | ServiceProvider$assignedJobsArgs<ExtArgs>
     ratings?: boolean | ServiceProvider$ratingsArgs<ExtArgs>
@@ -6339,6 +6663,7 @@ export namespace Prisma {
   export type $ServiceProviderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ServiceProvider"
     objects: {
+      providerAreas: Prisma.$ProviderAreaPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
       assignedJobs: Prisma.$JobPayload<ExtArgs>[]
       ratings: Prisma.$RatingPayload<ExtArgs>[]
@@ -6360,7 +6685,8 @@ export namespace Prisma {
       description: string | null
       experienceYears: number | null
       hourlyRate: Prisma.Decimal | null
-      coverageArea: string | null
+      coverageRadius: number | null
+      coverageType: $Enums.CoverageType | null
       performanceStats: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
@@ -6759,6 +7085,7 @@ export namespace Prisma {
    */
   export interface Prisma__ServiceProviderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    providerAreas<T extends ServiceProvider$providerAreasArgs<ExtArgs> = {}>(args?: Subset<T, ServiceProvider$providerAreasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     assignedJobs<T extends ServiceProvider$assignedJobsArgs<ExtArgs> = {}>(args?: Subset<T, ServiceProvider$assignedJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ratings<T extends ServiceProvider$ratingsArgs<ExtArgs> = {}>(args?: Subset<T, ServiceProvider$ratingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RatingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6807,7 +7134,8 @@ export namespace Prisma {
     readonly description: FieldRef<"ServiceProvider", 'String'>
     readonly experienceYears: FieldRef<"ServiceProvider", 'Int'>
     readonly hourlyRate: FieldRef<"ServiceProvider", 'Decimal'>
-    readonly coverageArea: FieldRef<"ServiceProvider", 'String'>
+    readonly coverageRadius: FieldRef<"ServiceProvider", 'Float'>
+    readonly coverageType: FieldRef<"ServiceProvider", 'CoverageType'>
     readonly performanceStats: FieldRef<"ServiceProvider", 'Json'>
     readonly createdAt: FieldRef<"ServiceProvider", 'DateTime'>
     readonly updatedAt: FieldRef<"ServiceProvider", 'DateTime'>
@@ -7208,6 +7536,30 @@ export namespace Prisma {
   }
 
   /**
+   * ServiceProvider.providerAreas
+   */
+  export type ServiceProvider$providerAreasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    where?: ProviderAreaWhereInput
+    orderBy?: ProviderAreaOrderByWithRelationInput | ProviderAreaOrderByWithRelationInput[]
+    cursor?: ProviderAreaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProviderAreaScalarFieldEnum | ProviderAreaScalarFieldEnum[]
+  }
+
+  /**
    * ServiceProvider.assignedJobs
    */
   export type ServiceProvider$assignedJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7386,6 +7738,1236 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ServiceProviderInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProviderArea
+   */
+
+  export type AggregateProviderArea = {
+    _count: ProviderAreaCountAggregateOutputType | null
+    _avg: ProviderAreaAvgAggregateOutputType | null
+    _sum: ProviderAreaSumAggregateOutputType | null
+    _min: ProviderAreaMinAggregateOutputType | null
+    _max: ProviderAreaMaxAggregateOutputType | null
+  }
+
+  export type ProviderAreaAvgAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+    distance: number | null
+  }
+
+  export type ProviderAreaSumAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+    distance: number | null
+  }
+
+  export type ProviderAreaMinAggregateOutputType = {
+    id: string | null
+    providerId: string | null
+    name: string | null
+    nameAr: string | null
+    governorate: string | null
+    governorateAr: string | null
+    delegation: string | null
+    delegationAr: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
+    isActive: boolean | null
+    distance: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProviderAreaMaxAggregateOutputType = {
+    id: string | null
+    providerId: string | null
+    name: string | null
+    nameAr: string | null
+    governorate: string | null
+    governorateAr: string | null
+    delegation: string | null
+    delegationAr: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
+    isActive: boolean | null
+    distance: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProviderAreaCountAggregateOutputType = {
+    id: number
+    providerId: number
+    name: number
+    nameAr: number
+    governorate: number
+    governorateAr: number
+    delegation: number
+    delegationAr: number
+    postalCode: number
+    latitude: number
+    longitude: number
+    isActive: number
+    distance: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProviderAreaAvgAggregateInputType = {
+    latitude?: true
+    longitude?: true
+    distance?: true
+  }
+
+  export type ProviderAreaSumAggregateInputType = {
+    latitude?: true
+    longitude?: true
+    distance?: true
+  }
+
+  export type ProviderAreaMinAggregateInputType = {
+    id?: true
+    providerId?: true
+    name?: true
+    nameAr?: true
+    governorate?: true
+    governorateAr?: true
+    delegation?: true
+    delegationAr?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
+    isActive?: true
+    distance?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProviderAreaMaxAggregateInputType = {
+    id?: true
+    providerId?: true
+    name?: true
+    nameAr?: true
+    governorate?: true
+    governorateAr?: true
+    delegation?: true
+    delegationAr?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
+    isActive?: true
+    distance?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProviderAreaCountAggregateInputType = {
+    id?: true
+    providerId?: true
+    name?: true
+    nameAr?: true
+    governorate?: true
+    governorateAr?: true
+    delegation?: true
+    delegationAr?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
+    isActive?: true
+    distance?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProviderAreaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProviderArea to aggregate.
+     */
+    where?: ProviderAreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProviderAreas to fetch.
+     */
+    orderBy?: ProviderAreaOrderByWithRelationInput | ProviderAreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProviderAreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProviderAreas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProviderAreas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProviderAreas
+    **/
+    _count?: true | ProviderAreaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProviderAreaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProviderAreaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProviderAreaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProviderAreaMaxAggregateInputType
+  }
+
+  export type GetProviderAreaAggregateType<T extends ProviderAreaAggregateArgs> = {
+        [P in keyof T & keyof AggregateProviderArea]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProviderArea[P]>
+      : GetScalarType<T[P], AggregateProviderArea[P]>
+  }
+
+
+
+
+  export type ProviderAreaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProviderAreaWhereInput
+    orderBy?: ProviderAreaOrderByWithAggregationInput | ProviderAreaOrderByWithAggregationInput[]
+    by: ProviderAreaScalarFieldEnum[] | ProviderAreaScalarFieldEnum
+    having?: ProviderAreaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProviderAreaCountAggregateInputType | true
+    _avg?: ProviderAreaAvgAggregateInputType
+    _sum?: ProviderAreaSumAggregateInputType
+    _min?: ProviderAreaMinAggregateInputType
+    _max?: ProviderAreaMaxAggregateInputType
+  }
+
+  export type ProviderAreaGroupByOutputType = {
+    id: string
+    providerId: string
+    name: string
+    nameAr: string | null
+    governorate: string
+    governorateAr: string | null
+    delegation: string | null
+    delegationAr: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
+    isActive: boolean
+    distance: number | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ProviderAreaCountAggregateOutputType | null
+    _avg: ProviderAreaAvgAggregateOutputType | null
+    _sum: ProviderAreaSumAggregateOutputType | null
+    _min: ProviderAreaMinAggregateOutputType | null
+    _max: ProviderAreaMaxAggregateOutputType | null
+  }
+
+  type GetProviderAreaGroupByPayload<T extends ProviderAreaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProviderAreaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProviderAreaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProviderAreaGroupByOutputType[P]>
+            : GetScalarType<T[P], ProviderAreaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProviderAreaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    providerId?: boolean
+    name?: boolean
+    nameAr?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    isActive?: boolean
+    distance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    provider?: boolean | ServiceProviderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["providerArea"]>
+
+  export type ProviderAreaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    providerId?: boolean
+    name?: boolean
+    nameAr?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    isActive?: boolean
+    distance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    provider?: boolean | ServiceProviderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["providerArea"]>
+
+  export type ProviderAreaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    providerId?: boolean
+    name?: boolean
+    nameAr?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    isActive?: boolean
+    distance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    provider?: boolean | ServiceProviderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["providerArea"]>
+
+  export type ProviderAreaSelectScalar = {
+    id?: boolean
+    providerId?: boolean
+    name?: boolean
+    nameAr?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    isActive?: boolean
+    distance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProviderAreaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "providerId" | "name" | "nameAr" | "governorate" | "governorateAr" | "delegation" | "delegationAr" | "postalCode" | "latitude" | "longitude" | "isActive" | "distance" | "createdAt" | "updatedAt", ExtArgs["result"]["providerArea"]>
+  export type ProviderAreaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    provider?: boolean | ServiceProviderDefaultArgs<ExtArgs>
+  }
+  export type ProviderAreaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    provider?: boolean | ServiceProviderDefaultArgs<ExtArgs>
+  }
+  export type ProviderAreaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    provider?: boolean | ServiceProviderDefaultArgs<ExtArgs>
+  }
+
+  export type $ProviderAreaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProviderArea"
+    objects: {
+      provider: Prisma.$ServiceProviderPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      providerId: string
+      name: string
+      nameAr: string | null
+      governorate: string
+      governorateAr: string | null
+      delegation: string | null
+      delegationAr: string | null
+      postalCode: string | null
+      latitude: number | null
+      longitude: number | null
+      isActive: boolean
+      distance: number | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["providerArea"]>
+    composites: {}
+  }
+
+  type ProviderAreaGetPayload<S extends boolean | null | undefined | ProviderAreaDefaultArgs> = $Result.GetResult<Prisma.$ProviderAreaPayload, S>
+
+  type ProviderAreaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProviderAreaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProviderAreaCountAggregateInputType | true
+    }
+
+  export interface ProviderAreaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProviderArea'], meta: { name: 'ProviderArea' } }
+    /**
+     * Find zero or one ProviderArea that matches the filter.
+     * @param {ProviderAreaFindUniqueArgs} args - Arguments to find a ProviderArea
+     * @example
+     * // Get one ProviderArea
+     * const providerArea = await prisma.providerArea.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProviderAreaFindUniqueArgs>(args: SelectSubset<T, ProviderAreaFindUniqueArgs<ExtArgs>>): Prisma__ProviderAreaClient<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProviderArea that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProviderAreaFindUniqueOrThrowArgs} args - Arguments to find a ProviderArea
+     * @example
+     * // Get one ProviderArea
+     * const providerArea = await prisma.providerArea.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProviderAreaFindUniqueOrThrowArgs>(args: SelectSubset<T, ProviderAreaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProviderAreaClient<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProviderArea that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderAreaFindFirstArgs} args - Arguments to find a ProviderArea
+     * @example
+     * // Get one ProviderArea
+     * const providerArea = await prisma.providerArea.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProviderAreaFindFirstArgs>(args?: SelectSubset<T, ProviderAreaFindFirstArgs<ExtArgs>>): Prisma__ProviderAreaClient<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProviderArea that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderAreaFindFirstOrThrowArgs} args - Arguments to find a ProviderArea
+     * @example
+     * // Get one ProviderArea
+     * const providerArea = await prisma.providerArea.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProviderAreaFindFirstOrThrowArgs>(args?: SelectSubset<T, ProviderAreaFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProviderAreaClient<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProviderAreas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderAreaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProviderAreas
+     * const providerAreas = await prisma.providerArea.findMany()
+     * 
+     * // Get first 10 ProviderAreas
+     * const providerAreas = await prisma.providerArea.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const providerAreaWithIdOnly = await prisma.providerArea.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProviderAreaFindManyArgs>(args?: SelectSubset<T, ProviderAreaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProviderArea.
+     * @param {ProviderAreaCreateArgs} args - Arguments to create a ProviderArea.
+     * @example
+     * // Create one ProviderArea
+     * const ProviderArea = await prisma.providerArea.create({
+     *   data: {
+     *     // ... data to create a ProviderArea
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProviderAreaCreateArgs>(args: SelectSubset<T, ProviderAreaCreateArgs<ExtArgs>>): Prisma__ProviderAreaClient<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProviderAreas.
+     * @param {ProviderAreaCreateManyArgs} args - Arguments to create many ProviderAreas.
+     * @example
+     * // Create many ProviderAreas
+     * const providerArea = await prisma.providerArea.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProviderAreaCreateManyArgs>(args?: SelectSubset<T, ProviderAreaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProviderAreas and returns the data saved in the database.
+     * @param {ProviderAreaCreateManyAndReturnArgs} args - Arguments to create many ProviderAreas.
+     * @example
+     * // Create many ProviderAreas
+     * const providerArea = await prisma.providerArea.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProviderAreas and only return the `id`
+     * const providerAreaWithIdOnly = await prisma.providerArea.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProviderAreaCreateManyAndReturnArgs>(args?: SelectSubset<T, ProviderAreaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProviderArea.
+     * @param {ProviderAreaDeleteArgs} args - Arguments to delete one ProviderArea.
+     * @example
+     * // Delete one ProviderArea
+     * const ProviderArea = await prisma.providerArea.delete({
+     *   where: {
+     *     // ... filter to delete one ProviderArea
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProviderAreaDeleteArgs>(args: SelectSubset<T, ProviderAreaDeleteArgs<ExtArgs>>): Prisma__ProviderAreaClient<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProviderArea.
+     * @param {ProviderAreaUpdateArgs} args - Arguments to update one ProviderArea.
+     * @example
+     * // Update one ProviderArea
+     * const providerArea = await prisma.providerArea.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProviderAreaUpdateArgs>(args: SelectSubset<T, ProviderAreaUpdateArgs<ExtArgs>>): Prisma__ProviderAreaClient<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProviderAreas.
+     * @param {ProviderAreaDeleteManyArgs} args - Arguments to filter ProviderAreas to delete.
+     * @example
+     * // Delete a few ProviderAreas
+     * const { count } = await prisma.providerArea.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProviderAreaDeleteManyArgs>(args?: SelectSubset<T, ProviderAreaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProviderAreas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderAreaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProviderAreas
+     * const providerArea = await prisma.providerArea.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProviderAreaUpdateManyArgs>(args: SelectSubset<T, ProviderAreaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProviderAreas and returns the data updated in the database.
+     * @param {ProviderAreaUpdateManyAndReturnArgs} args - Arguments to update many ProviderAreas.
+     * @example
+     * // Update many ProviderAreas
+     * const providerArea = await prisma.providerArea.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProviderAreas and only return the `id`
+     * const providerAreaWithIdOnly = await prisma.providerArea.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProviderAreaUpdateManyAndReturnArgs>(args: SelectSubset<T, ProviderAreaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProviderArea.
+     * @param {ProviderAreaUpsertArgs} args - Arguments to update or create a ProviderArea.
+     * @example
+     * // Update or create a ProviderArea
+     * const providerArea = await prisma.providerArea.upsert({
+     *   create: {
+     *     // ... data to create a ProviderArea
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProviderArea we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProviderAreaUpsertArgs>(args: SelectSubset<T, ProviderAreaUpsertArgs<ExtArgs>>): Prisma__ProviderAreaClient<$Result.GetResult<Prisma.$ProviderAreaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProviderAreas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderAreaCountArgs} args - Arguments to filter ProviderAreas to count.
+     * @example
+     * // Count the number of ProviderAreas
+     * const count = await prisma.providerArea.count({
+     *   where: {
+     *     // ... the filter for the ProviderAreas we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProviderAreaCountArgs>(
+      args?: Subset<T, ProviderAreaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProviderAreaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProviderArea.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderAreaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProviderAreaAggregateArgs>(args: Subset<T, ProviderAreaAggregateArgs>): Prisma.PrismaPromise<GetProviderAreaAggregateType<T>>
+
+    /**
+     * Group by ProviderArea.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderAreaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProviderAreaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProviderAreaGroupByArgs['orderBy'] }
+        : { orderBy?: ProviderAreaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProviderAreaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProviderAreaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProviderArea model
+   */
+  readonly fields: ProviderAreaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProviderArea.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProviderAreaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    provider<T extends ServiceProviderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ServiceProviderDefaultArgs<ExtArgs>>): Prisma__ServiceProviderClient<$Result.GetResult<Prisma.$ServiceProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProviderArea model
+   */
+  interface ProviderAreaFieldRefs {
+    readonly id: FieldRef<"ProviderArea", 'String'>
+    readonly providerId: FieldRef<"ProviderArea", 'String'>
+    readonly name: FieldRef<"ProviderArea", 'String'>
+    readonly nameAr: FieldRef<"ProviderArea", 'String'>
+    readonly governorate: FieldRef<"ProviderArea", 'String'>
+    readonly governorateAr: FieldRef<"ProviderArea", 'String'>
+    readonly delegation: FieldRef<"ProviderArea", 'String'>
+    readonly delegationAr: FieldRef<"ProviderArea", 'String'>
+    readonly postalCode: FieldRef<"ProviderArea", 'String'>
+    readonly latitude: FieldRef<"ProviderArea", 'Float'>
+    readonly longitude: FieldRef<"ProviderArea", 'Float'>
+    readonly isActive: FieldRef<"ProviderArea", 'Boolean'>
+    readonly distance: FieldRef<"ProviderArea", 'Float'>
+    readonly createdAt: FieldRef<"ProviderArea", 'DateTime'>
+    readonly updatedAt: FieldRef<"ProviderArea", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProviderArea findUnique
+   */
+  export type ProviderAreaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderArea to fetch.
+     */
+    where: ProviderAreaWhereUniqueInput
+  }
+
+  /**
+   * ProviderArea findUniqueOrThrow
+   */
+  export type ProviderAreaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderArea to fetch.
+     */
+    where: ProviderAreaWhereUniqueInput
+  }
+
+  /**
+   * ProviderArea findFirst
+   */
+  export type ProviderAreaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderArea to fetch.
+     */
+    where?: ProviderAreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProviderAreas to fetch.
+     */
+    orderBy?: ProviderAreaOrderByWithRelationInput | ProviderAreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProviderAreas.
+     */
+    cursor?: ProviderAreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProviderAreas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProviderAreas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProviderAreas.
+     */
+    distinct?: ProviderAreaScalarFieldEnum | ProviderAreaScalarFieldEnum[]
+  }
+
+  /**
+   * ProviderArea findFirstOrThrow
+   */
+  export type ProviderAreaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderArea to fetch.
+     */
+    where?: ProviderAreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProviderAreas to fetch.
+     */
+    orderBy?: ProviderAreaOrderByWithRelationInput | ProviderAreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProviderAreas.
+     */
+    cursor?: ProviderAreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProviderAreas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProviderAreas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProviderAreas.
+     */
+    distinct?: ProviderAreaScalarFieldEnum | ProviderAreaScalarFieldEnum[]
+  }
+
+  /**
+   * ProviderArea findMany
+   */
+  export type ProviderAreaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderAreas to fetch.
+     */
+    where?: ProviderAreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProviderAreas to fetch.
+     */
+    orderBy?: ProviderAreaOrderByWithRelationInput | ProviderAreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProviderAreas.
+     */
+    cursor?: ProviderAreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProviderAreas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProviderAreas.
+     */
+    skip?: number
+    distinct?: ProviderAreaScalarFieldEnum | ProviderAreaScalarFieldEnum[]
+  }
+
+  /**
+   * ProviderArea create
+   */
+  export type ProviderAreaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProviderArea.
+     */
+    data: XOR<ProviderAreaCreateInput, ProviderAreaUncheckedCreateInput>
+  }
+
+  /**
+   * ProviderArea createMany
+   */
+  export type ProviderAreaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProviderAreas.
+     */
+    data: ProviderAreaCreateManyInput | ProviderAreaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProviderArea createManyAndReturn
+   */
+  export type ProviderAreaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProviderAreas.
+     */
+    data: ProviderAreaCreateManyInput | ProviderAreaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProviderArea update
+   */
+  export type ProviderAreaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProviderArea.
+     */
+    data: XOR<ProviderAreaUpdateInput, ProviderAreaUncheckedUpdateInput>
+    /**
+     * Choose, which ProviderArea to update.
+     */
+    where: ProviderAreaWhereUniqueInput
+  }
+
+  /**
+   * ProviderArea updateMany
+   */
+  export type ProviderAreaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProviderAreas.
+     */
+    data: XOR<ProviderAreaUpdateManyMutationInput, ProviderAreaUncheckedUpdateManyInput>
+    /**
+     * Filter which ProviderAreas to update
+     */
+    where?: ProviderAreaWhereInput
+    /**
+     * Limit how many ProviderAreas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProviderArea updateManyAndReturn
+   */
+  export type ProviderAreaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * The data used to update ProviderAreas.
+     */
+    data: XOR<ProviderAreaUpdateManyMutationInput, ProviderAreaUncheckedUpdateManyInput>
+    /**
+     * Filter which ProviderAreas to update
+     */
+    where?: ProviderAreaWhereInput
+    /**
+     * Limit how many ProviderAreas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProviderArea upsert
+   */
+  export type ProviderAreaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProviderArea to update in case it exists.
+     */
+    where: ProviderAreaWhereUniqueInput
+    /**
+     * In case the ProviderArea found by the `where` argument doesn't exist, create a new ProviderArea with this data.
+     */
+    create: XOR<ProviderAreaCreateInput, ProviderAreaUncheckedCreateInput>
+    /**
+     * In case the ProviderArea was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProviderAreaUpdateInput, ProviderAreaUncheckedUpdateInput>
+  }
+
+  /**
+   * ProviderArea delete
+   */
+  export type ProviderAreaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
+    /**
+     * Filter which ProviderArea to delete.
+     */
+    where: ProviderAreaWhereUniqueInput
+  }
+
+  /**
+   * ProviderArea deleteMany
+   */
+  export type ProviderAreaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProviderAreas to delete
+     */
+    where?: ProviderAreaWhereInput
+    /**
+     * Limit how many ProviderAreas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProviderArea without action
+   */
+  export type ProviderAreaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderArea
+     */
+    select?: ProviderAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderArea
+     */
+    omit?: ProviderAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderAreaInclude<ExtArgs> | null
   }
 
 
@@ -10637,11 +12219,15 @@ export namespace Prisma {
   }
 
   export type JobAvgAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
     estimatedCost: Decimal | null
     actualCost: Decimal | null
   }
 
   export type JobSumAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
     estimatedCost: Decimal | null
     actualCost: Decimal | null
   }
@@ -10653,7 +12239,14 @@ export namespace Prisma {
     categoryId: string | null
     title: string | null
     description: string | null
-    location: string | null
+    governorate: string | null
+    governorateAr: string | null
+    delegation: string | null
+    delegationAr: string | null
+    country: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
     requestedDatetime: Date | null
     status: string | null
     estimatedCost: Decimal | null
@@ -10672,7 +12265,14 @@ export namespace Prisma {
     categoryId: string | null
     title: string | null
     description: string | null
-    location: string | null
+    governorate: string | null
+    governorateAr: string | null
+    delegation: string | null
+    delegationAr: string | null
+    country: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
     requestedDatetime: Date | null
     status: string | null
     estimatedCost: Decimal | null
@@ -10691,7 +12291,14 @@ export namespace Prisma {
     categoryId: number
     title: number
     description: number
-    location: number
+    governorate: number
+    governorateAr: number
+    delegation: number
+    delegationAr: number
+    country: number
+    postalCode: number
+    latitude: number
+    longitude: number
     requestedDatetime: number
     status: number
     estimatedCost: number
@@ -10706,11 +12313,15 @@ export namespace Prisma {
 
 
   export type JobAvgAggregateInputType = {
+    latitude?: true
+    longitude?: true
     estimatedCost?: true
     actualCost?: true
   }
 
   export type JobSumAggregateInputType = {
+    latitude?: true
+    longitude?: true
     estimatedCost?: true
     actualCost?: true
   }
@@ -10722,7 +12333,14 @@ export namespace Prisma {
     categoryId?: true
     title?: true
     description?: true
-    location?: true
+    governorate?: true
+    governorateAr?: true
+    delegation?: true
+    delegationAr?: true
+    country?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
     requestedDatetime?: true
     status?: true
     estimatedCost?: true
@@ -10741,7 +12359,14 @@ export namespace Prisma {
     categoryId?: true
     title?: true
     description?: true
-    location?: true
+    governorate?: true
+    governorateAr?: true
+    delegation?: true
+    delegationAr?: true
+    country?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
     requestedDatetime?: true
     status?: true
     estimatedCost?: true
@@ -10760,7 +12385,14 @@ export namespace Prisma {
     categoryId?: true
     title?: true
     description?: true
-    location?: true
+    governorate?: true
+    governorateAr?: true
+    delegation?: true
+    delegationAr?: true
+    country?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
     requestedDatetime?: true
     status?: true
     estimatedCost?: true
@@ -10866,7 +12498,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location: string | null
+    governorate: string | null
+    governorateAr: string | null
+    delegation: string | null
+    delegationAr: string | null
+    country: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
     requestedDatetime: Date
     status: string
     estimatedCost: Decimal | null
@@ -10904,7 +12543,14 @@ export namespace Prisma {
     categoryId?: boolean
     title?: boolean
     description?: boolean
-    location?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
     requestedDatetime?: boolean
     status?: boolean
     estimatedCost?: boolean
@@ -10933,7 +12579,14 @@ export namespace Prisma {
     categoryId?: boolean
     title?: boolean
     description?: boolean
-    location?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
     requestedDatetime?: boolean
     status?: boolean
     estimatedCost?: boolean
@@ -10955,7 +12608,14 @@ export namespace Prisma {
     categoryId?: boolean
     title?: boolean
     description?: boolean
-    location?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
     requestedDatetime?: boolean
     status?: boolean
     estimatedCost?: boolean
@@ -10977,7 +12637,14 @@ export namespace Prisma {
     categoryId?: boolean
     title?: boolean
     description?: boolean
-    location?: boolean
+    governorate?: boolean
+    governorateAr?: boolean
+    delegation?: boolean
+    delegationAr?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
     requestedDatetime?: boolean
     status?: boolean
     estimatedCost?: boolean
@@ -10989,7 +12656,7 @@ export namespace Prisma {
     closedReason?: boolean
   }
 
-  export type JobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "providerId" | "categoryId" | "title" | "description" | "location" | "requestedDatetime" | "status" | "estimatedCost" | "actualCost" | "completionDate" | "createdAt" | "updatedAt" | "closedAt" | "closedReason", ExtArgs["result"]["job"]>
+  export type JobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "providerId" | "categoryId" | "title" | "description" | "governorate" | "governorateAr" | "delegation" | "delegationAr" | "country" | "postalCode" | "latitude" | "longitude" | "requestedDatetime" | "status" | "estimatedCost" | "actualCost" | "completionDate" | "createdAt" | "updatedAt" | "closedAt" | "closedReason", ExtArgs["result"]["job"]>
   export type JobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     provider?: boolean | Job$providerArgs<ExtArgs>
@@ -11033,7 +12700,14 @@ export namespace Prisma {
       categoryId: string
       title: string
       description: string
-      location: string | null
+      governorate: string | null
+      governorateAr: string | null
+      delegation: string | null
+      delegationAr: string | null
+      country: string | null
+      postalCode: string | null
+      latitude: number | null
+      longitude: number | null
       requestedDatetime: Date
       status: string
       estimatedCost: Prisma.Decimal | null
@@ -11481,7 +13155,14 @@ export namespace Prisma {
     readonly categoryId: FieldRef<"Job", 'String'>
     readonly title: FieldRef<"Job", 'String'>
     readonly description: FieldRef<"Job", 'String'>
-    readonly location: FieldRef<"Job", 'String'>
+    readonly governorate: FieldRef<"Job", 'String'>
+    readonly governorateAr: FieldRef<"Job", 'String'>
+    readonly delegation: FieldRef<"Job", 'String'>
+    readonly delegationAr: FieldRef<"Job", 'String'>
+    readonly country: FieldRef<"Job", 'String'>
+    readonly postalCode: FieldRef<"Job", 'String'>
+    readonly latitude: FieldRef<"Job", 'Float'>
+    readonly longitude: FieldRef<"Job", 'Float'>
     readonly requestedDatetime: FieldRef<"Job", 'DateTime'>
     readonly status: FieldRef<"Job", 'String'>
     readonly estimatedCost: FieldRef<"Job", 'Decimal'>
@@ -18864,7 +20545,19 @@ export namespace Prisma {
     passwordHash: 'passwordHash',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    avatarUrl: 'avatarUrl'
+    avatarUrl: 'avatarUrl',
+    isActive: 'isActive',
+    placeId: 'placeId',
+    governorate: 'governorate',
+    governorateAr: 'governorateAr',
+    delegation: 'delegation',
+    delegationAr: 'delegationAr',
+    city: 'city',
+    state: 'state',
+    country: 'country',
+    postalCode: 'postalCode',
+    latitude: 'latitude',
+    longitude: 'longitude'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -18886,8 +20579,8 @@ export namespace Prisma {
     userId: 'userId',
     firstName: 'firstName',
     lastName: 'lastName',
-    contactInfo: 'contactInfo',
     location: 'location',
+    contactInfo: 'contactInfo',
     registrationDate: 'registrationDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -18908,7 +20601,8 @@ export namespace Prisma {
     description: 'description',
     experienceYears: 'experienceYears',
     hourlyRate: 'hourlyRate',
-    coverageArea: 'coverageArea',
+    coverageRadius: 'coverageRadius',
+    coverageType: 'coverageType',
     performanceStats: 'performanceStats',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -18916,6 +20610,27 @@ export namespace Prisma {
   };
 
   export type ServiceProviderScalarFieldEnum = (typeof ServiceProviderScalarFieldEnum)[keyof typeof ServiceProviderScalarFieldEnum]
+
+
+  export const ProviderAreaScalarFieldEnum: {
+    id: 'id',
+    providerId: 'providerId',
+    name: 'name',
+    nameAr: 'nameAr',
+    governorate: 'governorate',
+    governorateAr: 'governorateAr',
+    delegation: 'delegation',
+    delegationAr: 'delegationAr',
+    postalCode: 'postalCode',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    isActive: 'isActive',
+    distance: 'distance',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProviderAreaScalarFieldEnum = (typeof ProviderAreaScalarFieldEnum)[keyof typeof ProviderAreaScalarFieldEnum]
 
 
   export const ServiceCategoryScalarFieldEnum: {
@@ -18959,7 +20674,14 @@ export namespace Prisma {
     categoryId: 'categoryId',
     title: 'title',
     description: 'description',
-    location: 'location',
+    governorate: 'governorate',
+    governorateAr: 'governorateAr',
+    delegation: 'delegation',
+    delegationAr: 'delegationAr',
+    country: 'country',
+    postalCode: 'postalCode',
+    latitude: 'latitude',
+    longitude: 'longitude',
     requestedDatetime: 'requestedDatetime',
     status: 'status',
     estimatedCost: 'estimatedCost',
@@ -19145,6 +20867,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -19169,6 +20905,20 @@ export namespace Prisma {
    * Reference to a field of type 'Decimal[]'
    */
   export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CoverageType'
+   */
+  export type EnumCoverageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CoverageType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CoverageType[]'
+   */
+  export type ListEnumCoverageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CoverageType[]'>
     
 
 
@@ -19212,20 +20962,6 @@ export namespace Prisma {
    */
   export type ListEnumRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RequestStatus[]'>
     
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
   /**
    * Deep Input Types
    */
@@ -19241,6 +20977,18 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     avatarUrl?: StringNullableFilter<"User"> | string | null
+    isActive?: BoolFilter<"User"> | boolean
+    placeId?: StringNullableFilter<"User"> | string | null
+    governorate?: StringNullableFilter<"User"> | string | null
+    governorateAr?: StringNullableFilter<"User"> | string | null
+    delegation?: StringNullableFilter<"User"> | string | null
+    delegationAr?: StringNullableFilter<"User"> | string | null
+    city?: StringNullableFilter<"User"> | string | null
+    state?: StringNullableFilter<"User"> | string | null
+    country?: StringNullableFilter<"User"> | string | null
+    postalCode?: StringNullableFilter<"User"> | string | null
+    latitude?: FloatNullableFilter<"User"> | number | null
+    longitude?: FloatNullableFilter<"User"> | number | null
     administrator?: XOR<AdministratorNullableScalarRelationFilter, AdministratorWhereInput> | null
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     serviceProvider?: XOR<ServiceProviderNullableScalarRelationFilter, ServiceProviderWhereInput> | null
@@ -19257,6 +21005,18 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     avatarUrl?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    placeId?: SortOrderInput | SortOrder
+    governorate?: SortOrderInput | SortOrder
+    governorateAr?: SortOrderInput | SortOrder
+    delegation?: SortOrderInput | SortOrder
+    delegationAr?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    postalCode?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
     administrator?: AdministratorOrderByWithRelationInput
     client?: ClientOrderByWithRelationInput
     serviceProvider?: ServiceProviderOrderByWithRelationInput
@@ -19276,6 +21036,18 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     avatarUrl?: StringNullableFilter<"User"> | string | null
+    isActive?: BoolFilter<"User"> | boolean
+    placeId?: StringNullableFilter<"User"> | string | null
+    governorate?: StringNullableFilter<"User"> | string | null
+    governorateAr?: StringNullableFilter<"User"> | string | null
+    delegation?: StringNullableFilter<"User"> | string | null
+    delegationAr?: StringNullableFilter<"User"> | string | null
+    city?: StringNullableFilter<"User"> | string | null
+    state?: StringNullableFilter<"User"> | string | null
+    country?: StringNullableFilter<"User"> | string | null
+    postalCode?: StringNullableFilter<"User"> | string | null
+    latitude?: FloatNullableFilter<"User"> | number | null
+    longitude?: FloatNullableFilter<"User"> | number | null
     administrator?: XOR<AdministratorNullableScalarRelationFilter, AdministratorWhereInput> | null
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     serviceProvider?: XOR<ServiceProviderNullableScalarRelationFilter, ServiceProviderWhereInput> | null
@@ -19292,9 +21064,23 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     avatarUrl?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    placeId?: SortOrderInput | SortOrder
+    governorate?: SortOrderInput | SortOrder
+    governorateAr?: SortOrderInput | SortOrder
+    delegation?: SortOrderInput | SortOrder
+    delegationAr?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    postalCode?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -19307,6 +21093,18 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     avatarUrl?: StringNullableWithAggregatesFilter<"User"> | string | null
+    isActive?: BoolWithAggregatesFilter<"User"> | boolean
+    placeId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    governorate?: StringNullableWithAggregatesFilter<"User"> | string | null
+    governorateAr?: StringNullableWithAggregatesFilter<"User"> | string | null
+    delegation?: StringNullableWithAggregatesFilter<"User"> | string | null
+    delegationAr?: StringNullableWithAggregatesFilter<"User"> | string | null
+    city?: StringNullableWithAggregatesFilter<"User"> | string | null
+    state?: StringNullableWithAggregatesFilter<"User"> | string | null
+    country?: StringNullableWithAggregatesFilter<"User"> | string | null
+    postalCode?: StringNullableWithAggregatesFilter<"User"> | string | null
+    latitude?: FloatNullableWithAggregatesFilter<"User"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"User"> | number | null
   }
 
   export type AdministratorWhereInput = {
@@ -19379,8 +21177,8 @@ export namespace Prisma {
     userId?: StringFilter<"Client"> | string
     firstName?: StringFilter<"Client"> | string
     lastName?: StringFilter<"Client"> | string
-    contactInfo?: StringNullableFilter<"Client"> | string | null
     location?: StringNullableFilter<"Client"> | string | null
+    contactInfo?: StringNullableFilter<"Client"> | string | null
     registrationDate?: DateTimeFilter<"Client"> | Date | string
     createdAt?: DateTimeFilter<"Client"> | Date | string
     updatedAt?: DateTimeFilter<"Client"> | Date | string
@@ -19395,8 +21193,8 @@ export namespace Prisma {
     userId?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
-    contactInfo?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
+    contactInfo?: SortOrderInput | SortOrder
     registrationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -19414,8 +21212,8 @@ export namespace Prisma {
     NOT?: ClientWhereInput | ClientWhereInput[]
     firstName?: StringFilter<"Client"> | string
     lastName?: StringFilter<"Client"> | string
-    contactInfo?: StringNullableFilter<"Client"> | string | null
     location?: StringNullableFilter<"Client"> | string | null
+    contactInfo?: StringNullableFilter<"Client"> | string | null
     registrationDate?: DateTimeFilter<"Client"> | Date | string
     createdAt?: DateTimeFilter<"Client"> | Date | string
     updatedAt?: DateTimeFilter<"Client"> | Date | string
@@ -19430,8 +21228,8 @@ export namespace Prisma {
     userId?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
-    contactInfo?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
+    contactInfo?: SortOrderInput | SortOrder
     registrationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -19447,8 +21245,8 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Client"> | string
     firstName?: StringWithAggregatesFilter<"Client"> | string
     lastName?: StringWithAggregatesFilter<"Client"> | string
-    contactInfo?: StringNullableWithAggregatesFilter<"Client"> | string | null
     location?: StringNullableWithAggregatesFilter<"Client"> | string | null
+    contactInfo?: StringNullableWithAggregatesFilter<"Client"> | string | null
     registrationDate?: DateTimeWithAggregatesFilter<"Client"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
@@ -19469,11 +21267,13 @@ export namespace Prisma {
     description?: StringNullableFilter<"ServiceProvider"> | string | null
     experienceYears?: IntNullableFilter<"ServiceProvider"> | number | null
     hourlyRate?: DecimalNullableFilter<"ServiceProvider"> | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: StringNullableFilter<"ServiceProvider"> | string | null
+    coverageRadius?: FloatNullableFilter<"ServiceProvider"> | number | null
+    coverageType?: EnumCoverageTypeNullableFilter<"ServiceProvider"> | $Enums.CoverageType | null
     performanceStats?: JsonNullableFilter<"ServiceProvider">
     createdAt?: DateTimeFilter<"ServiceProvider"> | Date | string
     updatedAt?: DateTimeFilter<"ServiceProvider"> | Date | string
     validatedById?: StringNullableFilter<"ServiceProvider"> | string | null
+    providerAreas?: ProviderAreaListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     assignedJobs?: JobListRelationFilter
     ratings?: RatingListRelationFilter
@@ -19496,11 +21296,13 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     experienceYears?: SortOrderInput | SortOrder
     hourlyRate?: SortOrderInput | SortOrder
-    coverageArea?: SortOrderInput | SortOrder
+    coverageRadius?: SortOrderInput | SortOrder
+    coverageType?: SortOrderInput | SortOrder
     performanceStats?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     validatedById?: SortOrderInput | SortOrder
+    providerAreas?: ProviderAreaOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
     assignedJobs?: JobOrderByRelationAggregateInput
     ratings?: RatingOrderByRelationAggregateInput
@@ -19526,11 +21328,13 @@ export namespace Prisma {
     description?: StringNullableFilter<"ServiceProvider"> | string | null
     experienceYears?: IntNullableFilter<"ServiceProvider"> | number | null
     hourlyRate?: DecimalNullableFilter<"ServiceProvider"> | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: StringNullableFilter<"ServiceProvider"> | string | null
+    coverageRadius?: FloatNullableFilter<"ServiceProvider"> | number | null
+    coverageType?: EnumCoverageTypeNullableFilter<"ServiceProvider"> | $Enums.CoverageType | null
     performanceStats?: JsonNullableFilter<"ServiceProvider">
     createdAt?: DateTimeFilter<"ServiceProvider"> | Date | string
     updatedAt?: DateTimeFilter<"ServiceProvider"> | Date | string
     validatedById?: StringNullableFilter<"ServiceProvider"> | string | null
+    providerAreas?: ProviderAreaListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     assignedJobs?: JobListRelationFilter
     ratings?: RatingListRelationFilter
@@ -19553,7 +21357,8 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     experienceYears?: SortOrderInput | SortOrder
     hourlyRate?: SortOrderInput | SortOrder
-    coverageArea?: SortOrderInput | SortOrder
+    coverageRadius?: SortOrderInput | SortOrder
+    coverageType?: SortOrderInput | SortOrder
     performanceStats?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -19580,11 +21385,119 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"ServiceProvider"> | string | null
     experienceYears?: IntNullableWithAggregatesFilter<"ServiceProvider"> | number | null
     hourlyRate?: DecimalNullableWithAggregatesFilter<"ServiceProvider"> | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: StringNullableWithAggregatesFilter<"ServiceProvider"> | string | null
+    coverageRadius?: FloatNullableWithAggregatesFilter<"ServiceProvider"> | number | null
+    coverageType?: EnumCoverageTypeNullableWithAggregatesFilter<"ServiceProvider"> | $Enums.CoverageType | null
     performanceStats?: JsonNullableWithAggregatesFilter<"ServiceProvider">
     createdAt?: DateTimeWithAggregatesFilter<"ServiceProvider"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ServiceProvider"> | Date | string
     validatedById?: StringNullableWithAggregatesFilter<"ServiceProvider"> | string | null
+  }
+
+  export type ProviderAreaWhereInput = {
+    AND?: ProviderAreaWhereInput | ProviderAreaWhereInput[]
+    OR?: ProviderAreaWhereInput[]
+    NOT?: ProviderAreaWhereInput | ProviderAreaWhereInput[]
+    id?: StringFilter<"ProviderArea"> | string
+    providerId?: StringFilter<"ProviderArea"> | string
+    name?: StringFilter<"ProviderArea"> | string
+    nameAr?: StringNullableFilter<"ProviderArea"> | string | null
+    governorate?: StringFilter<"ProviderArea"> | string
+    governorateAr?: StringNullableFilter<"ProviderArea"> | string | null
+    delegation?: StringNullableFilter<"ProviderArea"> | string | null
+    delegationAr?: StringNullableFilter<"ProviderArea"> | string | null
+    postalCode?: StringNullableFilter<"ProviderArea"> | string | null
+    latitude?: FloatNullableFilter<"ProviderArea"> | number | null
+    longitude?: FloatNullableFilter<"ProviderArea"> | number | null
+    isActive?: BoolFilter<"ProviderArea"> | boolean
+    distance?: FloatNullableFilter<"ProviderArea"> | number | null
+    createdAt?: DateTimeFilter<"ProviderArea"> | Date | string
+    updatedAt?: DateTimeFilter<"ProviderArea"> | Date | string
+    provider?: XOR<ServiceProviderScalarRelationFilter, ServiceProviderWhereInput>
+  }
+
+  export type ProviderAreaOrderByWithRelationInput = {
+    id?: SortOrder
+    providerId?: SortOrder
+    name?: SortOrder
+    nameAr?: SortOrderInput | SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrderInput | SortOrder
+    delegation?: SortOrderInput | SortOrder
+    delegationAr?: SortOrderInput | SortOrder
+    postalCode?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    distance?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    provider?: ServiceProviderOrderByWithRelationInput
+  }
+
+  export type ProviderAreaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ProviderAreaWhereInput | ProviderAreaWhereInput[]
+    OR?: ProviderAreaWhereInput[]
+    NOT?: ProviderAreaWhereInput | ProviderAreaWhereInput[]
+    providerId?: StringFilter<"ProviderArea"> | string
+    name?: StringFilter<"ProviderArea"> | string
+    nameAr?: StringNullableFilter<"ProviderArea"> | string | null
+    governorate?: StringFilter<"ProviderArea"> | string
+    governorateAr?: StringNullableFilter<"ProviderArea"> | string | null
+    delegation?: StringNullableFilter<"ProviderArea"> | string | null
+    delegationAr?: StringNullableFilter<"ProviderArea"> | string | null
+    postalCode?: StringNullableFilter<"ProviderArea"> | string | null
+    latitude?: FloatNullableFilter<"ProviderArea"> | number | null
+    longitude?: FloatNullableFilter<"ProviderArea"> | number | null
+    isActive?: BoolFilter<"ProviderArea"> | boolean
+    distance?: FloatNullableFilter<"ProviderArea"> | number | null
+    createdAt?: DateTimeFilter<"ProviderArea"> | Date | string
+    updatedAt?: DateTimeFilter<"ProviderArea"> | Date | string
+    provider?: XOR<ServiceProviderScalarRelationFilter, ServiceProviderWhereInput>
+  }, "id">
+
+  export type ProviderAreaOrderByWithAggregationInput = {
+    id?: SortOrder
+    providerId?: SortOrder
+    name?: SortOrder
+    nameAr?: SortOrderInput | SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrderInput | SortOrder
+    delegation?: SortOrderInput | SortOrder
+    delegationAr?: SortOrderInput | SortOrder
+    postalCode?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    distance?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProviderAreaCountOrderByAggregateInput
+    _avg?: ProviderAreaAvgOrderByAggregateInput
+    _max?: ProviderAreaMaxOrderByAggregateInput
+    _min?: ProviderAreaMinOrderByAggregateInput
+    _sum?: ProviderAreaSumOrderByAggregateInput
+  }
+
+  export type ProviderAreaScalarWhereWithAggregatesInput = {
+    AND?: ProviderAreaScalarWhereWithAggregatesInput | ProviderAreaScalarWhereWithAggregatesInput[]
+    OR?: ProviderAreaScalarWhereWithAggregatesInput[]
+    NOT?: ProviderAreaScalarWhereWithAggregatesInput | ProviderAreaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ProviderArea"> | string
+    providerId?: StringWithAggregatesFilter<"ProviderArea"> | string
+    name?: StringWithAggregatesFilter<"ProviderArea"> | string
+    nameAr?: StringNullableWithAggregatesFilter<"ProviderArea"> | string | null
+    governorate?: StringWithAggregatesFilter<"ProviderArea"> | string
+    governorateAr?: StringNullableWithAggregatesFilter<"ProviderArea"> | string | null
+    delegation?: StringNullableWithAggregatesFilter<"ProviderArea"> | string | null
+    delegationAr?: StringNullableWithAggregatesFilter<"ProviderArea"> | string | null
+    postalCode?: StringNullableWithAggregatesFilter<"ProviderArea"> | string | null
+    latitude?: FloatNullableWithAggregatesFilter<"ProviderArea"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"ProviderArea"> | number | null
+    isActive?: BoolWithAggregatesFilter<"ProviderArea"> | boolean
+    distance?: FloatNullableWithAggregatesFilter<"ProviderArea"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"ProviderArea"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ProviderArea"> | Date | string
   }
 
   export type ServiceCategoryWhereInput = {
@@ -19774,7 +21687,14 @@ export namespace Prisma {
     categoryId?: StringFilter<"Job"> | string
     title?: StringFilter<"Job"> | string
     description?: StringFilter<"Job"> | string
-    location?: StringNullableFilter<"Job"> | string | null
+    governorate?: StringNullableFilter<"Job"> | string | null
+    governorateAr?: StringNullableFilter<"Job"> | string | null
+    delegation?: StringNullableFilter<"Job"> | string | null
+    delegationAr?: StringNullableFilter<"Job"> | string | null
+    country?: StringNullableFilter<"Job"> | string | null
+    postalCode?: StringNullableFilter<"Job"> | string | null
+    latitude?: FloatNullableFilter<"Job"> | number | null
+    longitude?: FloatNullableFilter<"Job"> | number | null
     requestedDatetime?: DateTimeFilter<"Job"> | Date | string
     status?: StringFilter<"Job"> | string
     estimatedCost?: DecimalNullableFilter<"Job"> | Decimal | DecimalJsLike | number | string | null
@@ -19802,7 +21722,14 @@ export namespace Prisma {
     categoryId?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    location?: SortOrderInput | SortOrder
+    governorate?: SortOrderInput | SortOrder
+    governorateAr?: SortOrderInput | SortOrder
+    delegation?: SortOrderInput | SortOrder
+    delegationAr?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    postalCode?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
     requestedDatetime?: SortOrder
     status?: SortOrder
     estimatedCost?: SortOrderInput | SortOrder
@@ -19833,7 +21760,14 @@ export namespace Prisma {
     categoryId?: StringFilter<"Job"> | string
     title?: StringFilter<"Job"> | string
     description?: StringFilter<"Job"> | string
-    location?: StringNullableFilter<"Job"> | string | null
+    governorate?: StringNullableFilter<"Job"> | string | null
+    governorateAr?: StringNullableFilter<"Job"> | string | null
+    delegation?: StringNullableFilter<"Job"> | string | null
+    delegationAr?: StringNullableFilter<"Job"> | string | null
+    country?: StringNullableFilter<"Job"> | string | null
+    postalCode?: StringNullableFilter<"Job"> | string | null
+    latitude?: FloatNullableFilter<"Job"> | number | null
+    longitude?: FloatNullableFilter<"Job"> | number | null
     requestedDatetime?: DateTimeFilter<"Job"> | Date | string
     status?: StringFilter<"Job"> | string
     estimatedCost?: DecimalNullableFilter<"Job"> | Decimal | DecimalJsLike | number | string | null
@@ -19861,7 +21795,14 @@ export namespace Prisma {
     categoryId?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    location?: SortOrderInput | SortOrder
+    governorate?: SortOrderInput | SortOrder
+    governorateAr?: SortOrderInput | SortOrder
+    delegation?: SortOrderInput | SortOrder
+    delegationAr?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    postalCode?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
     requestedDatetime?: SortOrder
     status?: SortOrder
     estimatedCost?: SortOrderInput | SortOrder
@@ -19888,7 +21829,14 @@ export namespace Prisma {
     categoryId?: StringWithAggregatesFilter<"Job"> | string
     title?: StringWithAggregatesFilter<"Job"> | string
     description?: StringWithAggregatesFilter<"Job"> | string
-    location?: StringNullableWithAggregatesFilter<"Job"> | string | null
+    governorate?: StringNullableWithAggregatesFilter<"Job"> | string | null
+    governorateAr?: StringNullableWithAggregatesFilter<"Job"> | string | null
+    delegation?: StringNullableWithAggregatesFilter<"Job"> | string | null
+    delegationAr?: StringNullableWithAggregatesFilter<"Job"> | string | null
+    country?: StringNullableWithAggregatesFilter<"Job"> | string | null
+    postalCode?: StringNullableWithAggregatesFilter<"Job"> | string | null
+    latitude?: FloatNullableWithAggregatesFilter<"Job"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"Job"> | number | null
     requestedDatetime?: DateTimeWithAggregatesFilter<"Job"> | Date | string
     status?: StringWithAggregatesFilter<"Job"> | string
     estimatedCost?: DecimalNullableWithAggregatesFilter<"Job"> | Decimal | DecimalJsLike | number | string | null
@@ -20387,6 +22335,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorCreateNestedOneWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderCreateNestedOneWithoutUserInput
@@ -20403,6 +22363,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorUncheckedCreateNestedOneWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderUncheckedCreateNestedOneWithoutUserInput
@@ -20419,6 +22391,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUpdateOneWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUpdateOneWithoutUserNestedInput
@@ -20435,6 +22419,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUncheckedUpdateOneWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUncheckedUpdateOneWithoutUserNestedInput
@@ -20451,6 +22447,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -20460,6 +22468,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -20469,6 +22489,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type AdministratorCreateInput = {
@@ -20540,8 +22572,8 @@ export namespace Prisma {
   export type ClientCreateInput = {
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20556,8 +22588,8 @@ export namespace Prisma {
     userId: string
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20570,8 +22602,8 @@ export namespace Prisma {
   export type ClientUpdateInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20586,8 +22618,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20601,8 +22633,8 @@ export namespace Prisma {
     userId: string
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20611,8 +22643,8 @@ export namespace Prisma {
   export type ClientUpdateManyMutationInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20622,8 +22654,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20640,10 +22672,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaCreateNestedManyWithoutProviderInput
     user: UserCreateNestedOneWithoutServiceProviderInput
     assignedJobs?: JobCreateNestedManyWithoutProviderInput
     ratings?: RatingCreateNestedManyWithoutProviderInput
@@ -20666,11 +22700,13 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     validatedById?: string | null
+    providerAreas?: ProviderAreaUncheckedCreateNestedManyWithoutProviderInput
     assignedJobs?: JobUncheckedCreateNestedManyWithoutProviderInput
     ratings?: RatingUncheckedCreateNestedManyWithoutProviderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProviderInput
@@ -20690,10 +22726,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUpdateManyWithoutProviderNestedInput
     user?: UserUpdateOneRequiredWithoutServiceProviderNestedInput
     assignedJobs?: JobUpdateManyWithoutProviderNestedInput
     ratings?: RatingUpdateManyWithoutProviderNestedInput
@@ -20716,11 +22754,13 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAreas?: ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput
     assignedJobs?: JobUncheckedUpdateManyWithoutProviderNestedInput
     ratings?: RatingUncheckedUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProviderNestedInput
@@ -20741,7 +22781,8 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20759,7 +22800,8 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20777,11 +22819,137 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProviderAreaCreateInput = {
+    id?: string
+    name: string
+    nameAr?: string | null
+    governorate: string
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    distance?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    provider: ServiceProviderCreateNestedOneWithoutProviderAreasInput
+  }
+
+  export type ProviderAreaUncheckedCreateInput = {
+    id?: string
+    providerId: string
+    name: string
+    nameAr?: string | null
+    governorate: string
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    distance?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProviderAreaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameAr?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: StringFieldUpdateOperationsInput | string
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    distance?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: ServiceProviderUpdateOneRequiredWithoutProviderAreasNestedInput
+  }
+
+  export type ProviderAreaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameAr?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: StringFieldUpdateOperationsInput | string
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    distance?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderAreaCreateManyInput = {
+    id?: string
+    providerId: string
+    name: string
+    nameAr?: string | null
+    governorate: string
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    distance?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProviderAreaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameAr?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: StringFieldUpdateOperationsInput | string
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    distance?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderAreaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameAr?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: StringFieldUpdateOperationsInput | string
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    distance?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ServiceCategoryCreateInput = {
@@ -20969,7 +23137,14 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -20997,7 +23172,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -21019,7 +23201,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -21047,7 +23236,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -21072,7 +23268,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -21088,7 +23291,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -21107,7 +23317,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -21641,6 +23858,22 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type AdministratorNullableScalarRelationFilter = {
     is?: AdministratorWhereInput | null
     isNot?: AdministratorWhereInput | null
@@ -21688,6 +23921,23 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     avatarUrl?: SortOrder
+    isActive?: SortOrder
+    placeId?: SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrder
+    delegation?: SortOrder
+    delegationAr?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    country?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -21697,6 +23947,18 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     avatarUrl?: SortOrder
+    isActive?: SortOrder
+    placeId?: SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrder
+    delegation?: SortOrder
+    delegationAr?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    country?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -21706,6 +23968,23 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     avatarUrl?: SortOrder
+    isActive?: SortOrder
+    placeId?: SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrder
+    delegation?: SortOrder
+    delegationAr?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    country?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -21756,6 +24035,30 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type UserScalarRelationFilter = {
@@ -21844,8 +24147,8 @@ export namespace Prisma {
     userId?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
-    contactInfo?: SortOrder
     location?: SortOrder
+    contactInfo?: SortOrder
     registrationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21855,8 +24158,8 @@ export namespace Prisma {
     userId?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
-    contactInfo?: SortOrder
     location?: SortOrder
+    contactInfo?: SortOrder
     registrationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21866,16 +24169,11 @@ export namespace Prisma {
     userId?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
-    contactInfo?: SortOrder
     location?: SortOrder
+    contactInfo?: SortOrder
     registrationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -21898,6 +24196,13 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type EnumCoverageTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.CoverageType | EnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.CoverageType[] | ListEnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.CoverageType[] | ListEnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumCoverageTypeNullableFilter<$PrismaModel> | $Enums.CoverageType | null
   }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -21923,6 +24228,12 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type ProviderAreaListRelationFilter = {
+    every?: ProviderAreaWhereInput
+    some?: ProviderAreaWhereInput
+    none?: ProviderAreaWhereInput
+  }
+
   export type ProviderSpecialtyListRelationFilter = {
     every?: ProviderSpecialtyWhereInput
     some?: ProviderSpecialtyWhereInput
@@ -21933,6 +24244,10 @@ export namespace Prisma {
     every?: ProfileMediaWhereInput
     some?: ProfileMediaWhereInput
     none?: ProfileMediaWhereInput
+  }
+
+  export type ProviderAreaOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ProviderSpecialtyOrderByRelationAggregateInput = {
@@ -21955,7 +24270,8 @@ export namespace Prisma {
     description?: SortOrder
     experienceYears?: SortOrder
     hourlyRate?: SortOrder
-    coverageArea?: SortOrder
+    coverageRadius?: SortOrder
+    coverageType?: SortOrder
     performanceStats?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21965,6 +24281,7 @@ export namespace Prisma {
   export type ServiceProviderAvgOrderByAggregateInput = {
     experienceYears?: SortOrder
     hourlyRate?: SortOrder
+    coverageRadius?: SortOrder
   }
 
   export type ServiceProviderMaxOrderByAggregateInput = {
@@ -21979,7 +24296,8 @@ export namespace Prisma {
     description?: SortOrder
     experienceYears?: SortOrder
     hourlyRate?: SortOrder
-    coverageArea?: SortOrder
+    coverageRadius?: SortOrder
+    coverageType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     validatedById?: SortOrder
@@ -21997,7 +24315,8 @@ export namespace Prisma {
     description?: SortOrder
     experienceYears?: SortOrder
     hourlyRate?: SortOrder
-    coverageArea?: SortOrder
+    coverageRadius?: SortOrder
+    coverageType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     validatedById?: SortOrder
@@ -22006,14 +24325,7 @@ export namespace Prisma {
   export type ServiceProviderSumOrderByAggregateInput = {
     experienceYears?: SortOrder
     hourlyRate?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    coverageRadius?: SortOrder
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -22047,6 +24359,16 @@ export namespace Prisma {
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
+
+  export type EnumCoverageTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CoverageType | EnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.CoverageType[] | ListEnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.CoverageType[] | ListEnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumCoverageTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.CoverageType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumCoverageTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumCoverageTypeNullableFilter<$PrismaModel>
+  }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
@@ -22074,6 +24396,77 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type ServiceProviderScalarRelationFilter = {
+    is?: ServiceProviderWhereInput
+    isNot?: ServiceProviderWhereInput
+  }
+
+  export type ProviderAreaCountOrderByAggregateInput = {
+    id?: SortOrder
+    providerId?: SortOrder
+    name?: SortOrder
+    nameAr?: SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrder
+    delegation?: SortOrder
+    delegationAr?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    isActive?: SortOrder
+    distance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProviderAreaAvgOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+    distance?: SortOrder
+  }
+
+  export type ProviderAreaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    providerId?: SortOrder
+    name?: SortOrder
+    nameAr?: SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrder
+    delegation?: SortOrder
+    delegationAr?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    isActive?: SortOrder
+    distance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProviderAreaMinOrderByAggregateInput = {
+    id?: SortOrder
+    providerId?: SortOrder
+    name?: SortOrder
+    nameAr?: SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrder
+    delegation?: SortOrder
+    delegationAr?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    isActive?: SortOrder
+    distance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProviderAreaSumOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+    distance?: SortOrder
+  }
+
   export type ServiceCategoryCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -22096,11 +24489,6 @@ export namespace Prisma {
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type ServiceProviderScalarRelationFilter = {
-    is?: ServiceProviderWhereInput
-    isNot?: ServiceProviderWhereInput
   }
 
   export type ServiceCategoryScalarRelationFilter = {
@@ -22212,7 +24600,14 @@ export namespace Prisma {
     categoryId?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    location?: SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrder
+    delegation?: SortOrder
+    delegationAr?: SortOrder
+    country?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
     requestedDatetime?: SortOrder
     status?: SortOrder
     estimatedCost?: SortOrder
@@ -22225,6 +24620,8 @@ export namespace Prisma {
   }
 
   export type JobAvgOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
     estimatedCost?: SortOrder
     actualCost?: SortOrder
   }
@@ -22236,7 +24633,14 @@ export namespace Prisma {
     categoryId?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    location?: SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrder
+    delegation?: SortOrder
+    delegationAr?: SortOrder
+    country?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
     requestedDatetime?: SortOrder
     status?: SortOrder
     estimatedCost?: SortOrder
@@ -22255,7 +24659,14 @@ export namespace Prisma {
     categoryId?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    location?: SortOrder
+    governorate?: SortOrder
+    governorateAr?: SortOrder
+    delegation?: SortOrder
+    delegationAr?: SortOrder
+    country?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
     requestedDatetime?: SortOrder
     status?: SortOrder
     estimatedCost?: SortOrder
@@ -22268,6 +24679,8 @@ export namespace Prisma {
   }
 
   export type JobSumOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
     estimatedCost?: SortOrder
     actualCost?: SortOrder
   }
@@ -22716,6 +25129,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type AdministratorUpdateOneWithoutUserNestedInput = {
     create?: XOR<AdministratorCreateWithoutUserInput, AdministratorUncheckedCreateWithoutUserInput>
     connectOrCreate?: AdministratorCreateOrConnectWithoutUserInput
@@ -23126,6 +25551,13 @@ export namespace Prisma {
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
   }
 
+  export type ProviderAreaCreateNestedManyWithoutProviderInput = {
+    create?: XOR<ProviderAreaCreateWithoutProviderInput, ProviderAreaUncheckedCreateWithoutProviderInput> | ProviderAreaCreateWithoutProviderInput[] | ProviderAreaUncheckedCreateWithoutProviderInput[]
+    connectOrCreate?: ProviderAreaCreateOrConnectWithoutProviderInput | ProviderAreaCreateOrConnectWithoutProviderInput[]
+    createMany?: ProviderAreaCreateManyProviderInputEnvelope
+    connect?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutServiceProviderInput = {
     create?: XOR<UserCreateWithoutServiceProviderInput, UserUncheckedCreateWithoutServiceProviderInput>
     connectOrCreate?: UserCreateOrConnectWithoutServiceProviderInput
@@ -23180,6 +25612,13 @@ export namespace Prisma {
     connect?: AdministratorWhereUniqueInput
   }
 
+  export type ProviderAreaUncheckedCreateNestedManyWithoutProviderInput = {
+    create?: XOR<ProviderAreaCreateWithoutProviderInput, ProviderAreaUncheckedCreateWithoutProviderInput> | ProviderAreaCreateWithoutProviderInput[] | ProviderAreaUncheckedCreateWithoutProviderInput[]
+    connectOrCreate?: ProviderAreaCreateOrConnectWithoutProviderInput | ProviderAreaCreateOrConnectWithoutProviderInput[]
+    createMany?: ProviderAreaCreateManyProviderInputEnvelope
+    connect?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+  }
+
   export type JobUncheckedCreateNestedManyWithoutProviderInput = {
     create?: XOR<JobCreateWithoutProviderInput, JobUncheckedCreateWithoutProviderInput> | JobCreateWithoutProviderInput[] | JobUncheckedCreateWithoutProviderInput[]
     connectOrCreate?: JobCreateOrConnectWithoutProviderInput | JobCreateOrConnectWithoutProviderInput[]
@@ -23222,10 +25661,6 @@ export namespace Prisma {
     connect?: ProfileMediaWhereUniqueInput | ProfileMediaWhereUniqueInput[]
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -23240,6 +25675,24 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type NullableEnumCoverageTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CoverageType | null
+  }
+
+  export type ProviderAreaUpdateManyWithoutProviderNestedInput = {
+    create?: XOR<ProviderAreaCreateWithoutProviderInput, ProviderAreaUncheckedCreateWithoutProviderInput> | ProviderAreaCreateWithoutProviderInput[] | ProviderAreaUncheckedCreateWithoutProviderInput[]
+    connectOrCreate?: ProviderAreaCreateOrConnectWithoutProviderInput | ProviderAreaCreateOrConnectWithoutProviderInput[]
+    upsert?: ProviderAreaUpsertWithWhereUniqueWithoutProviderInput | ProviderAreaUpsertWithWhereUniqueWithoutProviderInput[]
+    createMany?: ProviderAreaCreateManyProviderInputEnvelope
+    set?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+    disconnect?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+    delete?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+    connect?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+    update?: ProviderAreaUpdateWithWhereUniqueWithoutProviderInput | ProviderAreaUpdateWithWhereUniqueWithoutProviderInput[]
+    updateMany?: ProviderAreaUpdateManyWithWhereWithoutProviderInput | ProviderAreaUpdateManyWithWhereWithoutProviderInput[]
+    deleteMany?: ProviderAreaScalarWhereInput | ProviderAreaScalarWhereInput[]
   }
 
   export type UserUpdateOneRequiredWithoutServiceProviderNestedInput = {
@@ -23344,6 +25797,20 @@ export namespace Prisma {
     update?: XOR<XOR<AdministratorUpdateToOneWithWhereWithoutValidatedServiceProvidersInput, AdministratorUpdateWithoutValidatedServiceProvidersInput>, AdministratorUncheckedUpdateWithoutValidatedServiceProvidersInput>
   }
 
+  export type ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput = {
+    create?: XOR<ProviderAreaCreateWithoutProviderInput, ProviderAreaUncheckedCreateWithoutProviderInput> | ProviderAreaCreateWithoutProviderInput[] | ProviderAreaUncheckedCreateWithoutProviderInput[]
+    connectOrCreate?: ProviderAreaCreateOrConnectWithoutProviderInput | ProviderAreaCreateOrConnectWithoutProviderInput[]
+    upsert?: ProviderAreaUpsertWithWhereUniqueWithoutProviderInput | ProviderAreaUpsertWithWhereUniqueWithoutProviderInput[]
+    createMany?: ProviderAreaCreateManyProviderInputEnvelope
+    set?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+    disconnect?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+    delete?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+    connect?: ProviderAreaWhereUniqueInput | ProviderAreaWhereUniqueInput[]
+    update?: ProviderAreaUpdateWithWhereUniqueWithoutProviderInput | ProviderAreaUpdateWithWhereUniqueWithoutProviderInput[]
+    updateMany?: ProviderAreaUpdateManyWithWhereWithoutProviderInput | ProviderAreaUpdateManyWithWhereWithoutProviderInput[]
+    deleteMany?: ProviderAreaScalarWhereInput | ProviderAreaScalarWhereInput[]
+  }
+
   export type JobUncheckedUpdateManyWithoutProviderNestedInput = {
     create?: XOR<JobCreateWithoutProviderInput, JobUncheckedCreateWithoutProviderInput> | JobCreateWithoutProviderInput[] | JobUncheckedCreateWithoutProviderInput[]
     connectOrCreate?: JobCreateOrConnectWithoutProviderInput | JobCreateOrConnectWithoutProviderInput[]
@@ -23426,6 +25893,20 @@ export namespace Prisma {
     update?: ProfileMediaUpdateWithWhereUniqueWithoutProviderInput | ProfileMediaUpdateWithWhereUniqueWithoutProviderInput[]
     updateMany?: ProfileMediaUpdateManyWithWhereWithoutProviderInput | ProfileMediaUpdateManyWithWhereWithoutProviderInput[]
     deleteMany?: ProfileMediaScalarWhereInput | ProfileMediaScalarWhereInput[]
+  }
+
+  export type ServiceProviderCreateNestedOneWithoutProviderAreasInput = {
+    create?: XOR<ServiceProviderCreateWithoutProviderAreasInput, ServiceProviderUncheckedCreateWithoutProviderAreasInput>
+    connectOrCreate?: ServiceProviderCreateOrConnectWithoutProviderAreasInput
+    connect?: ServiceProviderWhereUniqueInput
+  }
+
+  export type ServiceProviderUpdateOneRequiredWithoutProviderAreasNestedInput = {
+    create?: XOR<ServiceProviderCreateWithoutProviderAreasInput, ServiceProviderUncheckedCreateWithoutProviderAreasInput>
+    connectOrCreate?: ServiceProviderCreateOrConnectWithoutProviderAreasInput
+    upsert?: ServiceProviderUpsertWithoutProviderAreasInput
+    connect?: ServiceProviderWhereUniqueInput
+    update?: XOR<XOR<ServiceProviderUpdateToOneWithWhereWithoutProviderAreasInput, ServiceProviderUpdateWithoutProviderAreasInput>, ServiceProviderUncheckedUpdateWithoutProviderAreasInput>
   }
 
   export type JobCreateNestedManyWithoutCategoryInput = {
@@ -24111,6 +26592,22 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -24181,9 +26678,28 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedDecimalNullableFilter<$PrismaModel = never> = {
@@ -24197,12 +26713,11 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+  export type NestedEnumCoverageTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.CoverageType | EnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.CoverageType[] | ListEnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.CoverageType[] | ListEnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumCoverageTypeNullableFilter<$PrismaModel> | $Enums.CoverageType | null
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -24221,17 +26736,6 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
@@ -24246,6 +26750,16 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCoverageTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CoverageType | EnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.CoverageType[] | ListEnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.CoverageType[] | ListEnumCoverageTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumCoverageTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.CoverageType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumCoverageTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumCoverageTypeNullableFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -24410,8 +26924,8 @@ export namespace Prisma {
   export type ClientCreateWithoutUserInput = {
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24424,8 +26938,8 @@ export namespace Prisma {
   export type ClientUncheckedCreateWithoutUserInput = {
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24451,10 +26965,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaCreateNestedManyWithoutProviderInput
     assignedJobs?: JobCreateNestedManyWithoutProviderInput
     ratings?: RatingCreateNestedManyWithoutProviderInput
     reviews?: ReviewCreateNestedManyWithoutProviderInput
@@ -24475,11 +26991,13 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     validatedById?: string | null
+    providerAreas?: ProviderAreaUncheckedCreateNestedManyWithoutProviderInput
     assignedJobs?: JobUncheckedCreateNestedManyWithoutProviderInput
     ratings?: RatingUncheckedCreateNestedManyWithoutProviderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProviderInput
@@ -24668,8 +27186,8 @@ export namespace Prisma {
   export type ClientUpdateWithoutUserInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24682,8 +27200,8 @@ export namespace Prisma {
   export type ClientUncheckedUpdateWithoutUserInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24715,10 +27233,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUpdateManyWithoutProviderNestedInput
     assignedJobs?: JobUpdateManyWithoutProviderNestedInput
     ratings?: RatingUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUpdateManyWithoutProviderNestedInput
@@ -24739,11 +27259,13 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAreas?: ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput
     assignedJobs?: JobUncheckedUpdateManyWithoutProviderNestedInput
     ratings?: RatingUncheckedUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProviderNestedInput
@@ -24854,6 +27376,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     client?: ClientCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderCreateNestedOneWithoutUserInput
     sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
@@ -24869,6 +27403,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
@@ -24893,10 +27439,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaCreateNestedManyWithoutProviderInput
     user: UserCreateNestedOneWithoutServiceProviderInput
     assignedJobs?: JobCreateNestedManyWithoutProviderInput
     ratings?: RatingCreateNestedManyWithoutProviderInput
@@ -24918,10 +27466,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaUncheckedCreateNestedManyWithoutProviderInput
     assignedJobs?: JobUncheckedCreateNestedManyWithoutProviderInput
     ratings?: RatingUncheckedCreateNestedManyWithoutProviderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProviderInput
@@ -24958,6 +27508,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     client?: ClientUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUpdateOneWithoutUserNestedInput
     sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
@@ -24973,6 +27535,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -25012,7 +27586,8 @@ export namespace Prisma {
     description?: StringNullableFilter<"ServiceProvider"> | string | null
     experienceYears?: IntNullableFilter<"ServiceProvider"> | number | null
     hourlyRate?: DecimalNullableFilter<"ServiceProvider"> | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: StringNullableFilter<"ServiceProvider"> | string | null
+    coverageRadius?: FloatNullableFilter<"ServiceProvider"> | number | null
+    coverageType?: EnumCoverageTypeNullableFilter<"ServiceProvider"> | $Enums.CoverageType | null
     performanceStats?: JsonNullableFilter<"ServiceProvider">
     createdAt?: DateTimeFilter<"ServiceProvider"> | Date | string
     updatedAt?: DateTimeFilter<"ServiceProvider"> | Date | string
@@ -25026,6 +27601,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderCreateNestedOneWithoutUserInput
     sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
@@ -25041,6 +27628,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorUncheckedCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
@@ -25058,7 +27657,14 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -25084,7 +27690,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -25224,6 +27837,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUpdateOneWithoutUserNestedInput
     sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
@@ -25239,6 +27864,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUncheckedUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -25273,7 +27910,14 @@ export namespace Prisma {
     categoryId?: StringFilter<"Job"> | string
     title?: StringFilter<"Job"> | string
     description?: StringFilter<"Job"> | string
-    location?: StringNullableFilter<"Job"> | string | null
+    governorate?: StringNullableFilter<"Job"> | string | null
+    governorateAr?: StringNullableFilter<"Job"> | string | null
+    delegation?: StringNullableFilter<"Job"> | string | null
+    delegationAr?: StringNullableFilter<"Job"> | string | null
+    country?: StringNullableFilter<"Job"> | string | null
+    postalCode?: StringNullableFilter<"Job"> | string | null
+    latitude?: FloatNullableFilter<"Job"> | number | null
+    longitude?: FloatNullableFilter<"Job"> | number | null
     requestedDatetime?: DateTimeFilter<"Job"> | Date | string
     status?: StringFilter<"Job"> | string
     estimatedCost?: DecimalNullableFilter<"Job"> | Decimal | DecimalJsLike | number | string | null
@@ -25377,6 +28021,50 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
   }
 
+  export type ProviderAreaCreateWithoutProviderInput = {
+    id?: string
+    name: string
+    nameAr?: string | null
+    governorate: string
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    distance?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProviderAreaUncheckedCreateWithoutProviderInput = {
+    id?: string
+    name: string
+    nameAr?: string | null
+    governorate: string
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    distance?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProviderAreaCreateOrConnectWithoutProviderInput = {
+    where: ProviderAreaWhereUniqueInput
+    create: XOR<ProviderAreaCreateWithoutProviderInput, ProviderAreaUncheckedCreateWithoutProviderInput>
+  }
+
+  export type ProviderAreaCreateManyProviderInputEnvelope = {
+    data: ProviderAreaCreateManyProviderInput | ProviderAreaCreateManyProviderInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserCreateWithoutServiceProviderInput = {
     id?: string
     email: string
@@ -25384,6 +28072,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorCreateNestedOneWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
@@ -25399,6 +28099,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorUncheckedCreateNestedOneWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
@@ -25416,7 +28128,14 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -25442,7 +28161,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -25637,6 +28363,43 @@ export namespace Prisma {
     create: XOR<AdministratorCreateWithoutValidatedServiceProvidersInput, AdministratorUncheckedCreateWithoutValidatedServiceProvidersInput>
   }
 
+  export type ProviderAreaUpsertWithWhereUniqueWithoutProviderInput = {
+    where: ProviderAreaWhereUniqueInput
+    update: XOR<ProviderAreaUpdateWithoutProviderInput, ProviderAreaUncheckedUpdateWithoutProviderInput>
+    create: XOR<ProviderAreaCreateWithoutProviderInput, ProviderAreaUncheckedCreateWithoutProviderInput>
+  }
+
+  export type ProviderAreaUpdateWithWhereUniqueWithoutProviderInput = {
+    where: ProviderAreaWhereUniqueInput
+    data: XOR<ProviderAreaUpdateWithoutProviderInput, ProviderAreaUncheckedUpdateWithoutProviderInput>
+  }
+
+  export type ProviderAreaUpdateManyWithWhereWithoutProviderInput = {
+    where: ProviderAreaScalarWhereInput
+    data: XOR<ProviderAreaUpdateManyMutationInput, ProviderAreaUncheckedUpdateManyWithoutProviderInput>
+  }
+
+  export type ProviderAreaScalarWhereInput = {
+    AND?: ProviderAreaScalarWhereInput | ProviderAreaScalarWhereInput[]
+    OR?: ProviderAreaScalarWhereInput[]
+    NOT?: ProviderAreaScalarWhereInput | ProviderAreaScalarWhereInput[]
+    id?: StringFilter<"ProviderArea"> | string
+    providerId?: StringFilter<"ProviderArea"> | string
+    name?: StringFilter<"ProviderArea"> | string
+    nameAr?: StringNullableFilter<"ProviderArea"> | string | null
+    governorate?: StringFilter<"ProviderArea"> | string
+    governorateAr?: StringNullableFilter<"ProviderArea"> | string | null
+    delegation?: StringNullableFilter<"ProviderArea"> | string | null
+    delegationAr?: StringNullableFilter<"ProviderArea"> | string | null
+    postalCode?: StringNullableFilter<"ProviderArea"> | string | null
+    latitude?: FloatNullableFilter<"ProviderArea"> | number | null
+    longitude?: FloatNullableFilter<"ProviderArea"> | number | null
+    isActive?: BoolFilter<"ProviderArea"> | boolean
+    distance?: FloatNullableFilter<"ProviderArea"> | number | null
+    createdAt?: DateTimeFilter<"ProviderArea"> | Date | string
+    updatedAt?: DateTimeFilter<"ProviderArea"> | Date | string
+  }
+
   export type UserUpsertWithoutServiceProviderInput = {
     update: XOR<UserUpdateWithoutServiceProviderInput, UserUncheckedUpdateWithoutServiceProviderInput>
     create: XOR<UserCreateWithoutServiceProviderInput, UserUncheckedCreateWithoutServiceProviderInput>
@@ -25655,6 +28418,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUpdateOneWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
@@ -25670,6 +28445,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUncheckedUpdateOneWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -25826,11 +28613,138 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ServiceProviderCreateWithoutProviderAreasInput = {
+    firstName: string
+    lastName: string
+    companyName?: string | null
+    contactInfo?: string | null
+    location?: string | null
+    registrationDate?: Date | string
+    isValidated?: boolean
+    description?: string | null
+    experienceYears?: number | null
+    hourlyRate?: Decimal | DecimalJsLike | number | string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
+    performanceStats?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutServiceProviderInput
+    assignedJobs?: JobCreateNestedManyWithoutProviderInput
+    ratings?: RatingCreateNestedManyWithoutProviderInput
+    reviews?: ReviewCreateNestedManyWithoutProviderInput
+    transactions?: TransactionCreateNestedManyWithoutProviderInput
+    specialties?: ProviderSpecialtyCreateNestedManyWithoutProviderInput
+    media?: ProfileMediaCreateNestedManyWithoutProviderInput
+    validatedBy?: AdministratorCreateNestedOneWithoutValidatedServiceProvidersInput
+  }
+
+  export type ServiceProviderUncheckedCreateWithoutProviderAreasInput = {
+    userId: string
+    firstName: string
+    lastName: string
+    companyName?: string | null
+    contactInfo?: string | null
+    location?: string | null
+    registrationDate?: Date | string
+    isValidated?: boolean
+    description?: string | null
+    experienceYears?: number | null
+    hourlyRate?: Decimal | DecimalJsLike | number | string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
+    performanceStats?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    validatedById?: string | null
+    assignedJobs?: JobUncheckedCreateNestedManyWithoutProviderInput
+    ratings?: RatingUncheckedCreateNestedManyWithoutProviderInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProviderInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutProviderInput
+    specialties?: ProviderSpecialtyUncheckedCreateNestedManyWithoutProviderInput
+    media?: ProfileMediaUncheckedCreateNestedManyWithoutProviderInput
+  }
+
+  export type ServiceProviderCreateOrConnectWithoutProviderAreasInput = {
+    where: ServiceProviderWhereUniqueInput
+    create: XOR<ServiceProviderCreateWithoutProviderAreasInput, ServiceProviderUncheckedCreateWithoutProviderAreasInput>
+  }
+
+  export type ServiceProviderUpsertWithoutProviderAreasInput = {
+    update: XOR<ServiceProviderUpdateWithoutProviderAreasInput, ServiceProviderUncheckedUpdateWithoutProviderAreasInput>
+    create: XOR<ServiceProviderCreateWithoutProviderAreasInput, ServiceProviderUncheckedCreateWithoutProviderAreasInput>
+    where?: ServiceProviderWhereInput
+  }
+
+  export type ServiceProviderUpdateToOneWithWhereWithoutProviderAreasInput = {
+    where?: ServiceProviderWhereInput
+    data: XOR<ServiceProviderUpdateWithoutProviderAreasInput, ServiceProviderUncheckedUpdateWithoutProviderAreasInput>
+  }
+
+  export type ServiceProviderUpdateWithoutProviderAreasInput = {
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isValidated?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
+    hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
+    performanceStats?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutServiceProviderNestedInput
+    assignedJobs?: JobUpdateManyWithoutProviderNestedInput
+    ratings?: RatingUpdateManyWithoutProviderNestedInput
+    reviews?: ReviewUpdateManyWithoutProviderNestedInput
+    transactions?: TransactionUpdateManyWithoutProviderNestedInput
+    specialties?: ProviderSpecialtyUpdateManyWithoutProviderNestedInput
+    media?: ProfileMediaUpdateManyWithoutProviderNestedInput
+    validatedBy?: AdministratorUpdateOneWithoutValidatedServiceProvidersNestedInput
+  }
+
+  export type ServiceProviderUncheckedUpdateWithoutProviderAreasInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isValidated?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
+    hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
+    performanceStats?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedJobs?: JobUncheckedUpdateManyWithoutProviderNestedInput
+    ratings?: RatingUncheckedUpdateManyWithoutProviderNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProviderNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutProviderNestedInput
+    specialties?: ProviderSpecialtyUncheckedUpdateManyWithoutProviderNestedInput
+    media?: ProfileMediaUncheckedUpdateManyWithoutProviderNestedInput
+  }
+
   export type JobCreateWithoutCategoryInput = {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -25856,7 +28770,14 @@ export namespace Prisma {
     providerId?: string | null
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -25945,10 +28866,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaCreateNestedManyWithoutProviderInput
     user: UserCreateNestedOneWithoutServiceProviderInput
     assignedJobs?: JobCreateNestedManyWithoutProviderInput
     ratings?: RatingCreateNestedManyWithoutProviderInput
@@ -25970,11 +28893,13 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     validatedById?: string | null
+    providerAreas?: ProviderAreaUncheckedCreateNestedManyWithoutProviderInput
     assignedJobs?: JobUncheckedCreateNestedManyWithoutProviderInput
     ratings?: RatingUncheckedCreateNestedManyWithoutProviderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProviderInput
@@ -26032,10 +28957,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUpdateManyWithoutProviderNestedInput
     user?: UserUpdateOneRequiredWithoutServiceProviderNestedInput
     assignedJobs?: JobUpdateManyWithoutProviderNestedInput
     ratings?: RatingUpdateManyWithoutProviderNestedInput
@@ -26057,11 +28984,13 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAreas?: ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput
     assignedJobs?: JobUncheckedUpdateManyWithoutProviderNestedInput
     ratings?: RatingUncheckedUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProviderNestedInput
@@ -26109,10 +29038,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaCreateNestedManyWithoutProviderInput
     user: UserCreateNestedOneWithoutServiceProviderInput
     assignedJobs?: JobCreateNestedManyWithoutProviderInput
     ratings?: RatingCreateNestedManyWithoutProviderInput
@@ -26134,11 +29065,13 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     validatedById?: string | null
+    providerAreas?: ProviderAreaUncheckedCreateNestedManyWithoutProviderInput
     assignedJobs?: JobUncheckedCreateNestedManyWithoutProviderInput
     ratings?: RatingUncheckedCreateNestedManyWithoutProviderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProviderInput
@@ -26173,10 +29106,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUpdateManyWithoutProviderNestedInput
     user?: UserUpdateOneRequiredWithoutServiceProviderNestedInput
     assignedJobs?: JobUpdateManyWithoutProviderNestedInput
     ratings?: RatingUpdateManyWithoutProviderNestedInput
@@ -26198,11 +29133,13 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAreas?: ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput
     assignedJobs?: JobUncheckedUpdateManyWithoutProviderNestedInput
     ratings?: RatingUncheckedUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProviderNestedInput
@@ -26213,8 +29150,8 @@ export namespace Prisma {
   export type ClientCreateWithoutJobsInput = {
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26228,8 +29165,8 @@ export namespace Prisma {
     userId: string
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26254,10 +29191,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaCreateNestedManyWithoutProviderInput
     user: UserCreateNestedOneWithoutServiceProviderInput
     ratings?: RatingCreateNestedManyWithoutProviderInput
     reviews?: ReviewCreateNestedManyWithoutProviderInput
@@ -26279,11 +29218,13 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     validatedById?: string | null
+    providerAreas?: ProviderAreaUncheckedCreateNestedManyWithoutProviderInput
     ratings?: RatingUncheckedCreateNestedManyWithoutProviderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProviderInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutProviderInput
@@ -26508,8 +29449,8 @@ export namespace Prisma {
   export type ClientUpdateWithoutJobsInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26523,8 +29464,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26555,10 +29496,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUpdateManyWithoutProviderNestedInput
     user?: UserUpdateOneRequiredWithoutServiceProviderNestedInput
     ratings?: RatingUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUpdateManyWithoutProviderNestedInput
@@ -26580,11 +29523,13 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAreas?: ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput
     ratings?: RatingUncheckedUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProviderNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutProviderNestedInput
@@ -26784,7 +29729,14 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -26811,7 +29763,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -26848,7 +29807,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -26875,7 +29841,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -26896,7 +29869,14 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -26923,7 +29903,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -26952,6 +29939,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorCreateNestedOneWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderCreateNestedOneWithoutUserInput
@@ -26967,6 +29966,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorUncheckedCreateNestedOneWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderUncheckedCreateNestedOneWithoutUserInput
@@ -26987,6 +29998,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorCreateNestedOneWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderCreateNestedOneWithoutUserInput
@@ -27002,6 +30025,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorUncheckedCreateNestedOneWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderUncheckedCreateNestedOneWithoutUserInput
@@ -27030,7 +30065,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -27057,7 +30099,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -27092,6 +30141,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUpdateOneWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUpdateOneWithoutUserNestedInput
@@ -27107,6 +30168,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUncheckedUpdateOneWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUncheckedUpdateOneWithoutUserNestedInput
@@ -27133,6 +30206,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUpdateOneWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUpdateOneWithoutUserNestedInput
@@ -27148,6 +30233,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUncheckedUpdateOneWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUncheckedUpdateOneWithoutUserNestedInput
@@ -27160,7 +30257,14 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -27187,7 +30291,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -27212,8 +30323,8 @@ export namespace Prisma {
   export type ClientCreateWithoutRatingsInput = {
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27227,8 +30338,8 @@ export namespace Prisma {
     userId: string
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27253,10 +30364,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaCreateNestedManyWithoutProviderInput
     user: UserCreateNestedOneWithoutServiceProviderInput
     assignedJobs?: JobCreateNestedManyWithoutProviderInput
     reviews?: ReviewCreateNestedManyWithoutProviderInput
@@ -27278,11 +30391,13 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     validatedById?: string | null
+    providerAreas?: ProviderAreaUncheckedCreateNestedManyWithoutProviderInput
     assignedJobs?: JobUncheckedCreateNestedManyWithoutProviderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProviderInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutProviderInput
@@ -27310,7 +30425,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -27337,7 +30459,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -27368,8 +30497,8 @@ export namespace Prisma {
   export type ClientUpdateWithoutRatingsInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27383,8 +30512,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27415,10 +30544,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUpdateManyWithoutProviderNestedInput
     user?: UserUpdateOneRequiredWithoutServiceProviderNestedInput
     assignedJobs?: JobUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUpdateManyWithoutProviderNestedInput
@@ -27440,11 +30571,13 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAreas?: ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput
     assignedJobs?: JobUncheckedUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProviderNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutProviderNestedInput
@@ -27456,7 +30589,14 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -27483,7 +30623,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -27508,8 +30655,8 @@ export namespace Prisma {
   export type ClientCreateWithoutReviewsInput = {
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27523,8 +30670,8 @@ export namespace Prisma {
     userId: string
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27549,10 +30696,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaCreateNestedManyWithoutProviderInput
     user: UserCreateNestedOneWithoutServiceProviderInput
     assignedJobs?: JobCreateNestedManyWithoutProviderInput
     ratings?: RatingCreateNestedManyWithoutProviderInput
@@ -27574,11 +30723,13 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     validatedById?: string | null
+    providerAreas?: ProviderAreaUncheckedCreateNestedManyWithoutProviderInput
     assignedJobs?: JobUncheckedCreateNestedManyWithoutProviderInput
     ratings?: RatingUncheckedCreateNestedManyWithoutProviderInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutProviderInput
@@ -27606,7 +30757,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -27633,7 +30791,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -27664,8 +30829,8 @@ export namespace Prisma {
   export type ClientUpdateWithoutReviewsInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27679,8 +30844,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27711,10 +30876,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUpdateManyWithoutProviderNestedInput
     user?: UserUpdateOneRequiredWithoutServiceProviderNestedInput
     assignedJobs?: JobUpdateManyWithoutProviderNestedInput
     ratings?: RatingUpdateManyWithoutProviderNestedInput
@@ -27736,11 +30903,13 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAreas?: ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput
     assignedJobs?: JobUncheckedUpdateManyWithoutProviderNestedInput
     ratings?: RatingUncheckedUpdateManyWithoutProviderNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutProviderNestedInput
@@ -27752,7 +30921,14 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -27779,7 +30955,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -27804,8 +30987,8 @@ export namespace Prisma {
   export type ClientCreateWithoutTransactionsInput = {
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27819,8 +31002,8 @@ export namespace Prisma {
     userId: string
     firstName: string
     lastName: string
-    contactInfo?: string | null
     location?: string | null
+    contactInfo?: string | null
     registrationDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27845,10 +31028,12 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerAreas?: ProviderAreaCreateNestedManyWithoutProviderInput
     user: UserCreateNestedOneWithoutServiceProviderInput
     assignedJobs?: JobCreateNestedManyWithoutProviderInput
     ratings?: RatingCreateNestedManyWithoutProviderInput
@@ -27870,11 +31055,13 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     validatedById?: string | null
+    providerAreas?: ProviderAreaUncheckedCreateNestedManyWithoutProviderInput
     assignedJobs?: JobUncheckedCreateNestedManyWithoutProviderInput
     ratings?: RatingUncheckedCreateNestedManyWithoutProviderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProviderInput
@@ -27902,7 +31089,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -27929,7 +31123,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -27960,8 +31161,8 @@ export namespace Prisma {
   export type ClientUpdateWithoutTransactionsInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27975,8 +31176,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28007,10 +31208,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUpdateManyWithoutProviderNestedInput
     user?: UserUpdateOneRequiredWithoutServiceProviderNestedInput
     assignedJobs?: JobUpdateManyWithoutProviderNestedInput
     ratings?: RatingUpdateManyWithoutProviderNestedInput
@@ -28032,11 +31235,13 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     validatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAreas?: ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput
     assignedJobs?: JobUncheckedUpdateManyWithoutProviderNestedInput
     ratings?: RatingUncheckedUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProviderNestedInput
@@ -28048,7 +31253,14 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -28075,7 +31287,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -28104,6 +31323,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorCreateNestedOneWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderCreateNestedOneWithoutUserInput
@@ -28119,6 +31350,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorUncheckedCreateNestedOneWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderUncheckedCreateNestedOneWithoutUserInput
@@ -28139,6 +31382,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorCreateNestedOneWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderCreateNestedOneWithoutUserInput
@@ -28154,6 +31409,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     avatarUrl?: string | null
+    isActive?: boolean
+    placeId?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    city?: string | null
+    state?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     administrator?: AdministratorUncheckedCreateNestedOneWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     serviceProvider?: ServiceProviderUncheckedCreateNestedOneWithoutUserInput
@@ -28182,7 +31449,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -28209,7 +31483,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -28244,6 +31525,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUpdateOneWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUpdateOneWithoutUserNestedInput
@@ -28259,6 +31552,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUncheckedUpdateOneWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUncheckedUpdateOneWithoutUserNestedInput
@@ -28285,6 +31590,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUpdateOneWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUpdateOneWithoutUserNestedInput
@@ -28300,6 +31617,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    placeId?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     administrator?: AdministratorUncheckedUpdateOneWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     serviceProvider?: ServiceProviderUncheckedUpdateOneWithoutUserNestedInput
@@ -28504,7 +31833,8 @@ export namespace Prisma {
     description?: string | null
     experienceYears?: number | null
     hourlyRate?: Decimal | DecimalJsLike | number | string | null
-    coverageArea?: string | null
+    coverageRadius?: number | null
+    coverageType?: $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28521,10 +31851,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUpdateManyWithoutProviderNestedInput
     user?: UserUpdateOneRequiredWithoutServiceProviderNestedInput
     assignedJobs?: JobUpdateManyWithoutProviderNestedInput
     ratings?: RatingUpdateManyWithoutProviderNestedInput
@@ -28546,10 +31878,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerAreas?: ProviderAreaUncheckedUpdateManyWithoutProviderNestedInput
     assignedJobs?: JobUncheckedUpdateManyWithoutProviderNestedInput
     ratings?: RatingUncheckedUpdateManyWithoutProviderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProviderNestedInput
@@ -28570,7 +31904,8 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     experienceYears?: NullableIntFieldUpdateOperationsInput | number | null
     hourlyRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    coverageArea?: NullableStringFieldUpdateOperationsInput | string | null
+    coverageRadius?: NullableFloatFieldUpdateOperationsInput | number | null
+    coverageType?: NullableEnumCoverageTypeFieldUpdateOperationsInput | $Enums.CoverageType | null
     performanceStats?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28582,7 +31917,14 @@ export namespace Prisma {
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -28630,7 +31972,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -28656,7 +32005,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -28680,7 +32036,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -28788,13 +32151,37 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ProviderAreaCreateManyProviderInput = {
+    id?: string
+    name: string
+    nameAr?: string | null
+    governorate: string
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    distance?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type JobCreateManyProviderInput = {
     id?: string
     clientId: string
     categoryId: string
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -28853,11 +32240,69 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ProviderAreaUpdateWithoutProviderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameAr?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: StringFieldUpdateOperationsInput | string
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    distance?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderAreaUncheckedUpdateWithoutProviderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameAr?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: StringFieldUpdateOperationsInput | string
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    distance?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderAreaUncheckedUpdateManyWithoutProviderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameAr?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: StringFieldUpdateOperationsInput | string
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    distance?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type JobUpdateWithoutProviderInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -28883,7 +32328,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -28907,7 +32359,14 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -29066,7 +32525,14 @@ export namespace Prisma {
     providerId?: string | null
     title: string
     description: string
-    location?: string | null
+    governorate?: string | null
+    governorateAr?: string | null
+    delegation?: string | null
+    delegationAr?: string | null
+    country?: string | null
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
     requestedDatetime: Date | string
     status?: string
     estimatedCost?: Decimal | DecimalJsLike | number | string | null
@@ -29086,7 +32552,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -29112,7 +32585,14 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -29136,7 +32616,14 @@ export namespace Prisma {
     providerId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
+    governorate?: NullableStringFieldUpdateOperationsInput | string | null
+    governorateAr?: NullableStringFieldUpdateOperationsInput | string | null
+    delegation?: NullableStringFieldUpdateOperationsInput | string | null
+    delegationAr?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     requestedDatetime?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     estimatedCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null

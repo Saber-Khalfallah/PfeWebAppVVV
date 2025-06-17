@@ -5,8 +5,8 @@ type props = PropsWithChildren;
 
 const CreateProjectPage = ({ children }: props) => {
   return (
-    <div className="mt-24">
-      <h1 className="text-2xl font-bold mb-4">Create a New Project</h1>
+    <div className="mt-17">
+      <h1 className="text-2xl font-bold mb-4  ml-100">Create a New Project</h1>
       <CreateJobContainer />
     </div>
   );

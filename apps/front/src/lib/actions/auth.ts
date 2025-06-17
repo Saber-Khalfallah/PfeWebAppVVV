@@ -19,23 +19,45 @@ export async function signUp(
   // void to allow redirect
   // Convert FormData to a plain object
   const formDataObj = Object.fromEntries(formData.entries());
-  const formValues: Record<string, any> = { ...formDataObj };
 
+
+  const formValues: Record<string, any> = {
+    ...formDataObj,
+    latitude: formDataObj.latitude ? parseFloat(formDataObj.latitude as string) : null,
+    longitude: formDataObj.longitude ? parseFloat(formDataObj.longitude as string) : null,
+  };
   // Convert checkbox value to boolean
   if (formValues.termsAccepted === "on") {
     formValues.termsAccepted = true;
   }
+
+  // Convert string numbers to actual numbers for coordinates
+  if (formValues.latitude && formValues.latitude !== "") {
+    formValues.latitude = parseFloat(formValues.latitude as string);
+  }
+  if (formValues.longitude && formValues.longitude !== "") {
+    formValues.longitude = parseFloat(formValues.longitude as string);
+  }
+
+  // Remove any fields that shouldn't be in the validation
+  // Sometimes FormData includes extra fields or duplicates
+  const validationFields = {
+    ...formValues,
+  };
+  console.log("type latitude:", typeof validationFields.latitude);
+
   const avatarFile = formData.get("avatar");
   if (avatarFile instanceof File) {
     formValues.avatar = avatarFile; // Zod will now see a File instance
   } else {
     formValues.avatar = null; // Ensure it's null if no file was selected, to match schema's .nullable()
   }
-  // Validate form fields using Zod
-  const validatedFields = SignUpFormSchema.safeParse(formValues);
 
+  // Validate form fields using Zod
+  const validatedFields = SignUpFormSchema.safeParse(validationFields);
+  console.log("Validated Fields:", validatedFields);
   if (!validatedFields.success) {
-    // When returning errors, make sure to not return the File object in `data`
+    console.error("Validation failed:", validatedFields.error.flatten());
     // because `input type="file"` cannot be re-populated with a default value.
     const dataToReturn = { ...formDataObj } as any; // Use formDataObj to keep other original form values
     if (dataToReturn.avatar instanceof File) {
@@ -50,40 +72,64 @@ export async function signUp(
 
   // Attempt to register user
   try {
+    console.log("Proceeding with backend API request.");
+
     // --- NEW: Construct a new FormData object for the API call ---
     // This is vital for sending the file along with other data as multipart/form-data.
     const apiFormData = new FormData();
 
     // Append validated non-file fields to the new apiFormData.
     // Use `validatedFields.data` as it contains the parsed and validated values.
-    apiFormData.append("firstName", validatedFields.data.firstName);
-    apiFormData.append("lastName", validatedFields.data.lastName);
-    apiFormData.append("email", validatedFields.data.email);
-    apiFormData.append("password", validatedFields.data.password);
-    apiFormData.append("role", validatedFields.data.role);
+    const locationData = {
+      latitude: Number(validatedFields.data.latitude),
+      longitude: Number(validatedFields.data.longitude)
+    };
 
-    // Append optional fields only if they have values after Zod validation
-    if (validatedFields.data.contactInfo) {
-      apiFormData.append("contactInfo", validatedFields.data.contactInfo);
-    }
-    if (validatedFields.data.companyName) {
-      apiFormData.append("companyName", validatedFields.data.companyName);
-    }
-    if (validatedFields.data.location) {
-      apiFormData.append("location", validatedFields.data.location);
+    const otherData = {
+      firstName: validatedFields.data.firstName,
+      lastName: validatedFields.data.lastName,
+      email: validatedFields.data.email,
+      password: validatedFields.data.password,
+      role: validatedFields.data.role,
+      governorate: validatedFields.data.governorate,
+      governorateAr: validatedFields.data.governorateAr,
+      delegation: validatedFields.data.delegation,
+      delegationAr: validatedFields.data.delegationAr,
+      postalCode: validatedFields.data.postalCode,
+      contactInfo: validatedFields.data.contactInfo || undefined,
+      companyName: validatedFields.data.companyName || undefined,
+    };
+    console.log('avatar: ', validatedFields.data.avatar)
+    if (validatedFields.data.avatar instanceof File && validatedFields.data.avatar.size > 0) {
+      const formData = new FormData();
+      formData.append('avatar', validatedFields.data.avatar);
+
+      // Append other fields as strings
+      Object.entries(otherData).forEach(([key, value]) => {
+        if (value !== undefined) {
+          formData.append(key, value.toString());
+        }
+      });
+
+      // Add location data as a stringified JSON field
+      formData.append('location', JSON.stringify(locationData));
+
+      await api.post("api/auth/register", formData);
+    } else {
+      // Send all data as JSON when there's no file
+      await api.post("api/auth/register", {
+        ...otherData,
+        ...locationData
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
     }
 
-    // Append the validated avatar file if it exists.
-    // `validatedFields.data.avatar` will be the actual File object or `null`.
-    if (validatedFields.data.avatar) {
-      apiFormData.append("avatar", validatedFields.data.avatar); // Append the actual File object
-    }
-    // --- END NEW ---
-
-    // Make the API call using the new apiFormData.
-    // Axios will automatically set the 'Content-Type: multipart/form-data' header.
-    await api.post("api/auth/register", apiFormData); // Verify your Axios base URL and API path
   } catch (error) {
+    if (axios.isAxiosError(error)) {
+    }
     const errorMessage = axios.isAxiosError(error)
       ? error.response?.data?.message || error.message || "Something went wrong"
       : "An unexpected error occurred";
@@ -109,6 +155,9 @@ export async function signUp(
 
   redirect("/auth/signin");
 }
+
+
+
 export async function signIn(
   state: SignUpFormState | void, // Using SignUpFormState for consistency, consider a specific SignInFormState
   formData: FormData,
@@ -146,8 +195,8 @@ export async function signIn(
   } catch (error) {
     const errorMessage = axios.isAxiosError(error)
       ? error.response?.data?.message ||
-        error.message ||
-        "Login failed. Please check your credentials."
+      error.message ||
+      "Login failed. Please check your credentials."
       : "An unexpected error occurred during login.";
 
     return {

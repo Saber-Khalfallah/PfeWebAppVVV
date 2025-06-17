@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
 import { Role } from '../../auth/enums/role.enum';
 
 export class CreateUserDto {
@@ -37,5 +37,47 @@ export class CreateUserDto {
   @IsOptional()
   location?: string; // For CLIENT
 
+  @IsString()
+  @IsOptional()
+  placeId?: string;
 
+  @IsString()
+  @IsOptional()
+  governorate?: string;
+
+  @IsString()
+  @IsOptional()
+  governorateAr?: string;
+
+  @IsString()
+  @IsOptional()
+  delegation?: string;
+
+  @IsString()
+  @IsOptional()
+  delegationAr?: string;
+
+  @IsString()
+  @IsOptional()
+  city?: string;
+
+  @IsString()
+  @IsOptional()
+  state?: string;
+
+  @IsString()
+  @IsOptional()
+  country?: string;
+
+  @IsString()
+  @IsOptional()
+  postalCode?: string;
+
+  @IsNumber()
+  @IsOptional()
+  latitude?: number;
+
+  @IsNumber()
+  @IsOptional()
+  longitude?: number;
 }

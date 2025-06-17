@@ -23,13 +23,24 @@ enum JobStatus {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique // Common attribute for login
-  passwordHash String? // Hashed password for authentication
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  avatarUrl    String? // Profile picture URL for all user types
-
+  id              String           @id @default(uuid())
+  email           String           @unique // Common attribute for login
+  passwordHash    String? // Hashed password for authentication
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  avatarUrl       String? // Profile picture URL for all user types
+  isActive        Boolean          @default(true) // Soft delete flag
+  placeId         String? // Google Places ID
+  governorate     String? // Tunisia governorate (e.g., "ARIANA")
+  governorateAr   String? // Arabic name
+  delegation      String? // Delegation name
+  delegationAr    String? // Arabic delegation name
+  city            String? // Specific city/area name
+  state           String? // Keep for compatibility
+  country         String?          @default("Tunisia")
+  postalCode      String? // Postal code from your data
+  latitude        Float?
+  longitude       Float?
   // Relationships linking to specific role tables (1-to-0 or 1)
   // A User can be at most one of these roles
   administrator   Administrator?
@@ -60,11 +71,12 @@ model Administrator {
 }
 
 model Client {
-  userId           String   @id @unique // PK and FK to User
-  firstName        String
-  lastName         String
-  contactInfo      String? // e.g., phone (email is in base User)
-  location         String? // e.g., city, address
+  userId      String  @id @unique // PK and FK to User
+  firstName   String
+  lastName    String
+  location    String? // e.g., city, address
+  contactInfo String? // e.g., phone (email is in base User)
+
   registrationDate DateTime @default(now())
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -84,13 +96,12 @@ model Client {
 // ServiceProvider role: Specific attributes and a required link back to User
 model ServiceProvider {
   // Core identity fields
-  userId      String  @id @unique // PK and FK to User
-  firstName   String
-  lastName    String
-  companyName String? // Or individual name
-  contactInfo String? // e.g., phone (email is in base User)
-  location    String? // e.g., city, address
-
+  userId           String   @id @unique // PK and FK to User
+  firstName        String
+  lastName         String
+  companyName      String? // Or individual name
+  contactInfo      String? // e.g., phone (email is in base User)
+  location         String? // e.g., city, address
   // Registration & validation
   registrationDate DateTime @default(now())
   isValidated      Boolean  @default(false) // Admin validation flag
@@ -98,8 +109,10 @@ model ServiceProvider {
   // Profile fields (formerly in ServiceProviderProfile)
   description      String?
   experienceYears  Int?
-  hourlyRate       Decimal? @db.Decimal(10, 2) // Use Decimal for currency
-  coverageArea     String? // More detailed area description
+  hourlyRate       Decimal?       @db.Decimal(10, 2) // Use Decimal for currency
+  coverageRadius   Float? // Coverage radius in km from their location
+  coverageType     CoverageType?  @default(RADIUS) // How they define coverage
+  providerAreas    ProviderArea[]
   performanceStats Json? // Store stats (e.g., avg_rating, jobs_completed) as JSON
 
   // Timestamps
@@ -124,6 +137,37 @@ model ServiceProvider {
   validatedBy   Administrator? @relation("ValidatedByAdmin", fields: [validatedById], references: [userId])
 
   @@map("service_providers")
+}
+
+model ProviderArea {
+  id            String   @id @default(uuid())
+  providerId    String // FK to ServiceProvider's userId
+  name          String // Area name (e.g., "Ariana Ville")
+  nameAr        String? // Arabic name
+  governorate   String // Governorate this area belongs to
+  governorateAr String? // Arabic governorate name
+  delegation    String? // Specific delegation if applicable
+  delegationAr  String? // Arabic delegation name
+  postalCode    String? // Postal code for this area
+  latitude      Float? // Area center latitude
+  longitude     Float? // Area center longitude
+  isActive      Boolean  @default(true)
+  distance      Float? // Distance from provider's base (calculated)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  provider ServiceProvider @relation(fields: [providerId], references: [userId], onDelete: Cascade)
+
+  @@index([governorate])
+  @@index([providerId])
+  @@index([postalCode])
+  @@map("provider_areas")
+}
+
+enum CoverageType {
+  RADIUS // Circular coverage from provider's base location
+  AREAS // Specific governorates/delegations selected
+  CUSTOM // Custom polygon (future enhancement)
 }
 
 // --- Service & Job Models ---
@@ -190,7 +234,14 @@ model Job {
 
   title             String
   description       String
-  location          String? // Job location
+  governorate       String? // Tunisia governorate (e.g., "ARIANA")
+  governorateAr     String? // Arabic name
+  delegation        String? // Delegation name
+  delegationAr      String? // Arabic delegation name
+  country           String?   @default("Tunisia")
+  postalCode        String? // Postal code from your data
+  latitude          Float?
+  longitude         Float? // Job location
   requestedDatetime DateTime // When service is needed
   status            String    @default("Open") // e.g., Open, Accepted, Completed, Cancelled
   estimatedCost     Decimal?  @db.Decimal(10, 2)

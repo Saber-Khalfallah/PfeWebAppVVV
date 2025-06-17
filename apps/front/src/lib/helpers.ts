@@ -55,7 +55,7 @@ export function formatDuration(start: Date, end: Date) {
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
   return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""}`;
 }
-export const averageRating = (ratings: { score: number }[]) => {
+export const averageRatingInv = (ratings: { score: number }[]) => {
   if (!ratings || ratings.length === 0) return 0;
   const sum = ratings.reduce((acc, r) => acc + r.score, 0);
   return sum / ratings.length;

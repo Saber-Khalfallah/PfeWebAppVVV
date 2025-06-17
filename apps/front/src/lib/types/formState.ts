@@ -16,7 +16,13 @@ export type SignUpFormState =
       role?: Role; // Added from CreateUserDto
       contactInfo?: string; // Added from CreateUserDto
       companyName?: string; // Added from CreateUserDto (for SERVICE_PROVIDER)
-      location?: string;
+      postalCode?: string;
+      governorate?: string;
+      governorateAr?: string;
+      delegation?: string;
+      delegationAr?: string;
+      latitude?: number;
+      longitude?: number;
       termsAccepted?: boolean; // Added for terms and conditions
     };
     errors?: {
@@ -29,8 +35,14 @@ export type SignUpFormState =
       role?: string[]; // Added for role validation errors
       contactInfo?: string[]; // Added for contactInfo validation errors
       companyName?: string[]; // Added for companyName validation errors
-      location?: string[];
-      termsAccepted?: string[]; // Added for terms and conditions validation errors
+      postalCode?: string[];
+      governorate?: string[];
+      governorateAr?: string[];
+      delegation?: string[];
+      delegationAr?: string[];
+      latitude?: string[];
+      longitude?: string[];
+      termsAccepted?: string[];
     };
     message?: string; // General form message (e.g., success or failure)
   }
@@ -55,7 +67,13 @@ export type JobFormState =
       createdAt?: string; // ISO string for DateTime input
       title?: string;
       description?: string;
-      location?: string | null;
+      governorate?: string;
+      governorateAr?: string;
+      delegation?: string;
+      delegationAr?: string;
+      postalCode?: string;
+      latitude?: number;
+      longitude?: number;
       requestedDatetime?: string; // ISO string for DateTime input
       status?: JobStatusEnum; // Use enum here
       estimatedCost?: string; // string for decimal input handling
@@ -74,7 +92,13 @@ export type JobFormState =
       createdAt?: string[];
       title?: string[];
       description?: string[];
-      location?: string[];
+      postalCode?: string[];
+      governorate?: string[];
+      governorateAr?: string[];
+      delegation?: string[];
+      delegationAr?: string[];
+      latitude?: string[];
+      longitude?: string[];
       requestedDatetime?: string[];
       status?: string[];
       estimatedCost?: string[];
@@ -85,7 +109,8 @@ export type JobFormState =
       closedReason?: string[];
     };
     message?: string; // General form message (e.g., success or failure)
-    ok: boolean;
+    ok: boolean | null;
+
   }
   | undefined;
 export interface JobFilters {

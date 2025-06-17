@@ -24,9 +24,49 @@ export class CreateJobDto {
   @IsNotEmpty()
   categoryId: string;
 
+   @IsString()
+  @IsOptional()
+  placeId?: string;
+
   @IsString()
   @IsOptional()
-  location?: string;
+  governorate?: string;
+
+  @IsString()
+  @IsOptional()
+  governorateAr?: string;
+
+  @IsString()
+  @IsOptional()
+  delegation?: string;
+
+  @IsString()
+  @IsOptional()
+  delegationAr?: string;
+
+  @IsString()
+  @IsOptional()
+  city?: string;
+
+  @IsString()
+  @IsOptional()
+  state?: string;
+
+  @IsString()
+  @IsOptional()
+  country?: string;
+
+  @IsString()
+  @IsOptional()
+  postalCode?: string;
+
+  @IsNumber()
+  @IsOptional()
+  latitude?: number;
+
+  @IsNumber()
+  @IsOptional()
+  longitude?: number;
 
   @IsDateString() // Validates that the string is a valid ISO 8601 date string
   @IsNotEmpty()
@@ -38,5 +78,5 @@ export class CreateJobDto {
   @Type(() => Number) // Important for transforming incoming string (from form) to number
   estimatedCost?: number;
 
-  
+
 }

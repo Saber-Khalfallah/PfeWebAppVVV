@@ -8,11 +8,13 @@ import { Craftsman } from "@/lib/types/modelTypes";
 
 interface InvitedCraftsmenSectionProps {
   craftsmen: Craftsman[];
-  
+  onProviderSelect: (provider: Craftsman) => void;
 }
 
 const InvitedCraftsmenSection: React.FC<InvitedCraftsmenSectionProps> = ({
   craftsmen,
+  onProviderSelect
+
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCraftsman, setSelectedCraftsman] = useState<Craftsman | null>(null);
@@ -23,47 +25,47 @@ const InvitedCraftsmenSection: React.FC<InvitedCraftsmenSectionProps> = ({
   };
   return (
     <>
-    <div className="bg-white p-4 rounded-lg shadow">
-      <h2 className="text-lg font-semibold mb-3">Invited Craftsmen</h2>
-      {craftsmen.length === 0 ? (
-        <div className="text-gray-600">No craftsmen invited yet.</div>
-      ) : (
-        <div className="space-y-4">
-          {craftsmen.map((craftsman) => (
-            <div
-              key={craftsman.id}
-              className="flex items-center justify-between"
-            >
-              <div className="flex items-center">
-                <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3">
-                  {/* Using next/image for optimized images. Replace with actual image paths */}
-                  <Image
-                    src={craftsman.avatar || "/images/default-avatar.png"} // Fallback avatar
-                    alt={craftsman.name}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-                <div>
-                  <p className="font-medium text-gray-800">{craftsman.name}</p>
-                  <div className="flex items-center text-sm text-gray-600">
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <svg
-                        key={i}
-                        className={`h-4 w-4 ${i < Math.floor(craftsman.rating) ? "text-yellow-400" : "text-gray-300"}`}
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.783.57-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.381-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                    <span className="ml-1">
-                      ({craftsman.rating.toFixed(1)})
-                    </span>
+      <div className="bg-white p-4 rounded-lg shadow">
+        <h2 className="text-lg font-semibold mb-3">Invited Craftsmen</h2>
+        {craftsmen?.length === 0 ? (
+          <div className="text-gray-600">No craftsmen invited yet.</div>
+        ) : (
+          <div className="space-y-4">
+            {craftsmen?.map((craftsman) => (
+              <div
+                key={craftsman.id}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center">
+                  <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3">
+                    {/* Using next/image for optimized images. Replace with actual image paths */}
+                    <Image
+                      src={craftsman.avatar || "/images/default-avatar.png"} // Fallback avatar
+                      alt={craftsman.name}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-800">{craftsman.name}</p>
+                    <div className="flex items-center text-sm text-gray-600">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <svg
+                          key={i}
+                          className={`h-4 w-4 ${i < Math.floor(craftsman.rating) ? "text-yellow-400" : "text-gray-300"}`}
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.783.57-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.381-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                      <span className="ml-1">
+                        ({craftsman.rating.toFixed(1)})
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <button
+                <button
                   onClick={() => openModal(craftsman)}
                   className="p-2 text-gray-600 hover:text-blue-600 transition-colors rounded-full hover:bg-gray-100"
                   title="View Provider Details"
@@ -89,12 +91,12 @@ const InvitedCraftsmenSection: React.FC<InvitedCraftsmenSectionProps> = ({
                     />
                   </svg>
                 </button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-    <Dialog
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <Dialog
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         className="relative z-50"

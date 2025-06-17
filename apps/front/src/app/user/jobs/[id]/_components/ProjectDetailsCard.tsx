@@ -12,7 +12,13 @@ interface ProjectDetailsCardProps {
     id: string;
     title: string;
     description: string;
-    location: string;
+    delegation?: string;
+    delegationAr?: string;
+    governorate?: string;
+    governorateAr?: string;
+    postalCode?: string;
+    latitude?: number;
+    longitude?: number;
     requestedDatetime: string;
     status: string;
     estimatedCost: string | null;
@@ -38,7 +44,7 @@ interface ProjectDetailsCardProps {
       };
     };
 
-    category: {
+    category?: {
       id: string;
       name: string;
       description: string;
@@ -76,7 +82,22 @@ interface ProjectDetailsCardProps {
     messages?: any[]; // You can refine this based on your message object schema
   };
 }
+const formatDate = (dateString: string | undefined | null) => {
+  if (!dateString) {
+    return 'Not available';
+  }
 
+  try {
+    return new Intl.DateTimeFormat("en-CA", {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(new Date(dateString));
+  } catch (error) {
+    console.error('Invalid date:', dateString);
+    return 'Invalid date';
+  }
+};
 const ProjectDetailsCard: React.FC<ProjectDetailsCardProps> = ({ project }) => {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -103,30 +124,45 @@ const ProjectDetailsCard: React.FC<ProjectDetailsCardProps> = ({ project }) => {
       });
     }
   };
-  const truncateDescription = (text: string, maxLength: number = 300) => {
+  const truncateDescription = (text: string | undefined | null, maxLength: number = 300) => {
+    if (!text) return 'No description available';
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + '...';
   };
   return (
     <div className="bg-white p-6 rounded-lg shadow">
-      
+
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-gray-800">Project Details</h2>
-        
+
       </div>
 
       <div className="grid grid-cols-3 gap-4 text-center mb-6">
         <div className="p-3 bg-gray-50 rounded-md">
           <p className="text-2xl font-bold text-gray-800">
-            {new Intl.DateTimeFormat("en-CA").format(
-              new Date(project.createdAt),
-            )}
+            {formatDate(project.createdAt)}
           </p>
           <p className="text-sm text-gray-500">Date Posted</p>
         </div>
-        <div className="p-3 bg-gray-50 rounded-md">
-          <p className="text-2xl font-bold text-gray-800">{project.location}</p>
-          <p className="text-sm text-gray-500">Location</p>
+        <div className="flex items-center text-gray-600 mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span>
+            {project.delegation
+              ? `${project.delegation}${project.governorate ? `, ${project.governorate}` : ''}${project.postalCode ? ` (${project.postalCode})` : ''}`
+              : 'Location not specified'
+            }
+          </span>
         </div>
       </div>
 
@@ -137,11 +173,28 @@ const ProjectDetailsCard: React.FC<ProjectDetailsCardProps> = ({ project }) => {
           </p>
           <p>
             <span className="font-medium">Service Category:</span>{" "}
-            {project.category.name}
+            {project?.category?.name || 'Not specified'}
           </p>
-          <p>
-            <span className="font-medium">Location:</span> {project.location}
-          </p>
+          <div className="flex items-center text-gray-600 mb-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span>
+              {project.delegation
+                ? `${project.delegation}${project.governorate ? `, ${project.governorate}` : ''}${project.postalCode ? ` (${project.postalCode})` : ''}`
+                : 'Location not specified'
+              }
+            </span>
+          </div>
         </div>
 
         <div>
@@ -189,7 +242,7 @@ const ProjectDetailsCard: React.FC<ProjectDetailsCardProps> = ({ project }) => {
                 </div>
               ))}
             </div>
-            
+
             {/* Scroll Buttons */}
             {project.media.length > 3 && (
               <>

@@ -126,7 +126,19 @@ exports.Prisma.UserScalarFieldEnum = {
   passwordHash: 'passwordHash',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  avatarUrl: 'avatarUrl'
+  avatarUrl: 'avatarUrl',
+  isActive: 'isActive',
+  placeId: 'placeId',
+  governorate: 'governorate',
+  governorateAr: 'governorateAr',
+  delegation: 'delegation',
+  delegationAr: 'delegationAr',
+  city: 'city',
+  state: 'state',
+  country: 'country',
+  postalCode: 'postalCode',
+  latitude: 'latitude',
+  longitude: 'longitude'
 };
 
 exports.Prisma.AdministratorScalarFieldEnum = {
@@ -142,8 +154,8 @@ exports.Prisma.ClientScalarFieldEnum = {
   userId: 'userId',
   firstName: 'firstName',
   lastName: 'lastName',
-  contactInfo: 'contactInfo',
   location: 'location',
+  contactInfo: 'contactInfo',
   registrationDate: 'registrationDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -161,11 +173,30 @@ exports.Prisma.ServiceProviderScalarFieldEnum = {
   description: 'description',
   experienceYears: 'experienceYears',
   hourlyRate: 'hourlyRate',
-  coverageArea: 'coverageArea',
+  coverageRadius: 'coverageRadius',
+  coverageType: 'coverageType',
   performanceStats: 'performanceStats',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   validatedById: 'validatedById'
+};
+
+exports.Prisma.ProviderAreaScalarFieldEnum = {
+  id: 'id',
+  providerId: 'providerId',
+  name: 'name',
+  nameAr: 'nameAr',
+  governorate: 'governorate',
+  governorateAr: 'governorateAr',
+  delegation: 'delegation',
+  delegationAr: 'delegationAr',
+  postalCode: 'postalCode',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  isActive: 'isActive',
+  distance: 'distance',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ServiceCategoryScalarFieldEnum = {
@@ -200,7 +231,14 @@ exports.Prisma.JobScalarFieldEnum = {
   categoryId: 'categoryId',
   title: 'title',
   description: 'description',
-  location: 'location',
+  governorate: 'governorate',
+  governorateAr: 'governorateAr',
+  delegation: 'delegation',
+  delegationAr: 'delegationAr',
+  country: 'country',
+  postalCode: 'postalCode',
+  latitude: 'latitude',
+  longitude: 'longitude',
   requestedDatetime: 'requestedDatetime',
   status: 'status',
   estimatedCost: 'estimatedCost',
@@ -308,6 +346,12 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
+exports.CoverageType = exports.$Enums.CoverageType = {
+  RADIUS: 'RADIUS',
+  AREAS: 'AREAS',
+  CUSTOM: 'CUSTOM'
+};
+
 exports.RequestType = exports.$Enums.RequestType = {
   CLIENT_TO_PROVIDER: 'CLIENT_TO_PROVIDER',
   PROVIDER_TO_CLIENT: 'PROVIDER_TO_CLIENT'
@@ -325,6 +369,7 @@ exports.Prisma.ModelName = {
   Administrator: 'Administrator',
   Client: 'Client',
   ServiceProvider: 'ServiceProvider',
+  ProviderArea: 'ProviderArea',
   ServiceCategory: 'ServiceCategory',
   ProviderSpecialty: 'ProviderSpecialty',
   ProfileMedia: 'ProfileMedia',

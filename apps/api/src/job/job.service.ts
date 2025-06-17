@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -18,7 +18,7 @@ export class JobService {
     createJobDto: CreateJobDto,
     imageFiles?: Express.Multer.File[],
   ) {
-    const { categoryId, location, ...jobData } = createJobDto;
+    const { categoryId, governorate, governorateAr, delegation, delegationAr, postalCode, latitude, longitude, country, ...jobData } = createJobDto;
 
     // Verify client exists
     const client = await this.prisma.client.findUnique({
@@ -69,7 +69,14 @@ export class JobService {
         ...jobData,
         clientId,
         categoryId,
-        location,
+        delegation,
+        delegationAr,
+        governorate,
+        governorateAr,
+        postalCode,
+        latitude,
+        longitude,
+        country,
         status: JobStatus.OPEN,
         media: {
           create: jobMediaData, // Create related JobMedia records
@@ -377,62 +384,84 @@ export class JobService {
     return updatedRequest;
   }
   async assignProviderToJob(jobId: string, providerId: string, clientId: string) {
-    // Verify job belongs to client and is open
-    const job = await this.prisma.job.findUnique({
-      where: { id: jobId },
-      include: {
-        client: true,
-        jobRequests: {
-          where: {
-            OR: [
-              { requesterId: providerId, targetId: clientId },
-              { requesterId: clientId, targetId: providerId },
-            ],
-            status: RequestStatus.ACCEPTED,
+    try {
+      console.log('Starting assignProviderToJob with:', { jobId, providerId, clientId });
+
+      // First, find the service provider ID using the user ID
+      const serviceProvider = await this.prisma.serviceProvider.findUnique({
+        where: { userId: providerId }
+      });
+
+      if (!serviceProvider) {
+        throw new NotFoundException('Service provider not found');
+      }
+
+      // Find the job with its requests
+      const job = await this.prisma.job.findUnique({
+        where: { id: jobId },
+        include: {
+          jobRequests: {
+            where: {
+              AND: [
+                { status: RequestStatus.ACCEPTED },
+                {
+                  OR: [
+                    { requesterId: providerId },
+                    { targetId: providerId }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      });
+
+      if (!job) {
+        throw new NotFoundException('Job not found');
+      }
+
+      if (job.clientId !== clientId) {
+        throw new ForbiddenException('Only job owner can assign providers');
+      }
+
+      if (job.status !== JobStatus.OPEN) {
+        throw new BadRequestException('Job is not open');
+      }
+
+      // Check for accepted request
+      if (!job.jobRequests || job.jobRequests.length === 0) {
+        throw new BadRequestException('No accepted request found between client and provider');
+      }
+
+      // Update job status and assign provider using service provider ID
+      const updatedJob = await this.prisma.job.update({
+        where: { id: jobId },
+        data: {
+          providerId: serviceProvider.userId, // Use service provider ID instead of user ID
+          status: JobStatus.CLOSED,
+        },
+        include: {
+          client: {
+            include: { user: true }
           },
-        },
-      },
-    });
+          provider: {
+            include: { user: true }
+          },
+          category: true,
+          jobRequests: {
+            include: {
+              requester: true,
+              target: true
+            }
+          }
+        }
+      });
 
-    if (!job) {
-      throw new NotFoundException('Job not found');
+      return updatedJob;
+    } catch (error) {
+      console.error('Error in assignProviderToJob:', error);
+      throw error;
     }
-
-    if (job.clientId !== clientId) {
-      throw new ForbiddenException('Only job owner can assign providers');
-    }
-
-    if (job.status !== JobStatus.OPEN) {
-      throw new BadRequestException('Job is not open');
-    }
-
-    // Verify there's an accepted request between client and provider
-    if (job.jobRequests.length === 0) {
-      throw new BadRequestException('No accepted request found between client and provider');
-    }
-
-    // Assign provider and close job
-    const updatedJob = await this.prisma.job.update({
-      where: { id: jobId },
-      data: {
-        providerId,
-        status: JobStatus.IN_PROGRESS,
-      },
-      include: {
-        client: {
-          include: { user: true },
-        },
-        provider: {
-          include: { user: true },
-        },
-        category: true,
-      },
-    });
-
-    // Notify assigned provider
-    // await this.notificationService.sendJobAssignmentNotification(providerId, jobId);
-
-    return updatedJob;
   }
 
   // Close job (by client)
@@ -514,7 +543,7 @@ export class JobService {
           },
         },
         location: {
-          contains: job.location ?? undefined,
+          contains: job.governorate ?? undefined,
           mode: 'insensitive',
         },
       },
@@ -597,9 +626,107 @@ export class JobService {
   }
 
 
-  update(id: number, updateJobDto: UpdateJobDto) {
-    return `This action updates a #${id} job`;
+  // Add this to your JobService class
+  async updateJob(
+    jobId: string,
+    userId: string,
+    updateJobDto: UpdateJobDto,
+    imageFiles?: Express.Multer.File[],
+    removedImages?: string[], // Handle removed images
+  ) {
+    const job = await this.prisma.job.findFirst({
+      where: {
+        id: jobId,
+        clientId: userId,
+      },
+      include: {
+        media: true,
+      }
+    });
+
+    if (!job) {
+      throw new NotFoundException('Job not found or unauthorized');
+    }
+
+    // Remove images from Azure Storage and the database
+    if (removedImages && removedImages.length > 0) {
+      for (const imageUrl of removedImages) {
+        const blobName = this.azureStorageService.getBlobNameFromUrl(imageUrl);
+        if (blobName) {
+          await this.azureStorageService.deleteFile(blobName); // Delete from Azure
+        }
+      }
+
+      // Delete the media from the database
+      await this.prisma.job.update({
+        where: { id: jobId },
+        data: {
+          media: {
+            deleteMany: {
+              mediaUrl: { in: removedImages },
+            }
+          }
+        }
+      });
+    }
+
+    // Handle image uploads if any
+    let jobMediaData: {
+      mediaUrl: string;
+      mediaType: string;
+      caption?: string;
+    }[] = [];
+
+    if (imageFiles && imageFiles.length > 0) {
+      const uploadPromises = imageFiles.map(async (file) => {
+        const mediaUrl = await this.azureStorageService.uploadFile(file.buffer, file.originalname, 'jobs');
+        return {
+          mediaUrl,
+          mediaType: 'photo',
+          caption: file.originalname,
+        };
+      });
+
+      jobMediaData = await Promise.all(uploadPromises);
+    }
+
+    // Update job data
+    const updatedJob = await this.prisma.job.update({
+      where: { id: jobId },
+      data: {
+        title: updateJobDto.title,
+        description: updateJobDto.description,
+        categoryId: updateJobDto.categoryId,
+        governorate: updateJobDto.governorate,
+        governorateAr: updateJobDto.governorateAr,
+        delegation: updateJobDto.delegation,
+        delegationAr: updateJobDto.delegationAr,
+        postalCode: updateJobDto.postalCode,
+        latitude: updateJobDto.latitude,
+        longitude: updateJobDto.longitude,
+        estimatedCost: updateJobDto.estimatedCost,
+        requestedDatetime: updateJobDto.requestedDatetime,
+        ...(jobMediaData.length > 0 && {
+          media: {
+            create: jobMediaData
+          }
+        })
+      },
+      include: {
+        media: true,
+        category: true,
+        client: { include: { user: true } },
+      }
+    });
+
+    return {
+      ok: true,
+      data: updatedJob,
+      message: 'Job updated successfully'
+    };
   }
+
+
 
   remove(id: number) {
     return `This action removes a #${id} job`;

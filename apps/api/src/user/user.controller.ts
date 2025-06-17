@@ -27,6 +27,24 @@ export class UserController {
   findOne(@Param('id') id: string) {
     return this.userService.findById(id);
   }
+  
+  @Patch(':id/toggle-status')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMINISTRATOR)
+  async toggleStatus(
+    @Param('id') id: string,
+    @CurrentUser() currentUser: any
+  ) {
+    if (currentUser.role !== Role.ADMINISTRATOR) {
+      throw new ForbiddenException('Only administrators can ban/unban users');
+    }
+
+    if (id === currentUser.userId) {
+      throw new ForbiddenException('You cannot ban/unban yourself');
+    }
+
+    return this.userService.toggleStatus(id);
+  }
 
   @Patch(':id')
 @UseGuards(JwtAuthGuard, RolesGuard)

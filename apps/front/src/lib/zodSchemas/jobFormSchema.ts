@@ -11,11 +11,34 @@ export const jobSchema = z.object({
     .min(20, "Description must be at least 20 characters long")
     .max(1000, "Description must not exceed 1000 characters"),
 
-  location: z
-    .string()
-    .min(1, "Location is required")
-    .max(100, "Location must not exceed 100 characters"),
-    
+  governorate: z
+    .string({ required_error: "Governorate is required." })
+    .min(1, "Governorate cannot be empty.")
+    .trim(),
+  governorateAr: z
+    .string({ required_error: "Arabic governorate is required." })
+    .min(1, "Arabic governorate cannot be empty.")
+    .trim(),
+  delegation: z
+    .string({ required_error: "Delegation is required." })
+    .min(1, "Delegation cannot be empty.")
+    .trim(),
+  delegationAr: z
+    .string({ required_error: "Arabic delegation is required." })
+    .min(1, "Arabic delegation cannot be empty.")
+    .trim(),
+  postalCode: z
+    .string({ required_error: "Postal code is required." })
+    .min(4, "Postal code must be at least 4 characters long.")
+    .max(4, "Postal code must be exactly 4 characters long.")
+    .regex(/^\d{4}$/, "Postal code must be 4 digits.")
+    .trim(),
+  latitude: z.coerce.number()
+    .min(-90, "Latitude must be between -90 and 90.")
+    .max(90, "Latitude must be between -90 and 90."),
+  longitude: z.coerce.number()
+    .min(-180, "Longitude must be between -180 and 180.")
+    .max(180, "Longitude must be between -180 and 180."),
 
   requestedDatetime: z
     .string()

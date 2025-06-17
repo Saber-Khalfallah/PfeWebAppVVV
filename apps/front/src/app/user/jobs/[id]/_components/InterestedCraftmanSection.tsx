@@ -47,15 +47,15 @@ const InterestedCraftsmenSection: React.FC<InterestedCraftsmenSectionProps> = ({
     (
       <div className="bg-white p-4 rounded-lg shadow">
         <h2 className="text-lg font-semibold mb-3">Interested Craftsmen</h2>
-        {craftsmen.length === 0 ? (
+        {craftsmen?.length === 0 ? (
           <div className="text-gray-600">
             No craftsmen have responded to your project yet.
           </div>
         ) : (
           <div className="space-y-4">
-            {craftsmen.map((craftsman) => (
+            {craftsmen?.map((craftsman) => (
               <div
-                key={craftsman.id}
+                key={craftsman?.id}
                 className="flex items-center justify-between"
               >
                 <div className="flex items-center">

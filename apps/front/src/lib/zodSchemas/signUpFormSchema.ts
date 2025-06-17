@@ -36,7 +36,35 @@ export const SignUpFormSchema = z
     role: RoleEnum,
     contactInfo: z.string().optional().or(z.literal("")),
     companyName: z.string().optional().or(z.literal("")),
-    location: z.string().optional().or(z.literal("")),
+    // Address fields for Tunisia
+    governorate: z
+      .string({ required_error: "Governorate is required." })
+      .min(1, "Governorate cannot be empty.")
+      .trim(),
+    governorateAr: z
+      .string({ required_error: "Arabic governorate is required." })
+      .min(1, "Arabic governorate cannot be empty.")
+      .trim(),
+    delegation: z
+      .string({ required_error: "Delegation is required." })
+      .min(1, "Delegation cannot be empty.")
+      .trim(),
+    delegationAr: z
+      .string({ required_error: "Arabic delegation is required." })
+      .min(1, "Arabic delegation cannot be empty.")
+      .trim(),
+    postalCode: z
+      .string({ required_error: "Postal code is required." })
+      .min(4, "Postal code must be at least 4 characters long.")
+      .max(4, "Postal code must be exactly 4 characters long.")
+      .regex(/^\d{4}$/, "Postal code must be 4 digits.")
+      .trim(),
+    latitude: z.coerce.number()
+      .min(-90, "Latitude must be between -90 and 90.")
+      .max(90, "Latitude must be between -90 and 90."),
+    longitude: z.coerce.number()
+      .min(-180, "Longitude must be between -180 and 180.")
+      .max(180, "Longitude must be between -180 and 180."),
     termsAccepted: z
       .boolean()
       .or(z.enum(["on"]))
@@ -44,7 +72,7 @@ export const SignUpFormSchema = z
       .refine((val) => val === true, {
         message: "You must accept the terms and conditions",
       }),
-    avatar: z.instanceof(File).optional().nullable(), // Explicitly allow null if no file is selected
+    avatar: z.instanceof(File).optional().nullable(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -58,7 +86,6 @@ export const SignUpFormSchema = z
         path: ["role"],
       });
     }
-
     if (
       data.role === "serviceProvider" &&
       (!data.companyName || data.companyName.trim() === "")
@@ -67,14 +94,6 @@ export const SignUpFormSchema = z
         code: z.ZodIssueCode.custom,
         message: "Company name is required for service providers.",
         path: ["companyName"],
-      });
-    }
-
-    if (!data.location || data.location.trim() === "") {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Location is required.",
-        path: ["location"],
       });
     }
   });

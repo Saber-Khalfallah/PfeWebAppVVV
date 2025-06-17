@@ -59,25 +59,16 @@ const SignInFormComponent = () => {
       {!!state?.message && <p className="text-red-500">{state.message}</p>}
 
       {/* Social login buttons */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <Button
-          type="button" // Important for buttons not submitting the main form
-          variant="outline"
-          className="w-full flex items-center justify-center py-2.5 text-sm font-medium text-card-foreground hover:bg-muted"
-        >
-          <GoogleIcon />
-          <a href={`${BACKEND_URL}/api/auth/google/login`}>Google</a>
-        </Button>
+      <div className="flex justify-center">
         <Button
           type="button"
           variant="outline"
-          className="w-full flex items-center justify-center py-2.5 text-sm font-medium text-card-foreground hover:bg-muted"
+          className="w-full max-w-xs flex items-center justify-center py-2.5 text-sm font-medium text-card-foreground hover:bg-muted gap-2"
         >
-          <FacebookIcon />
-          Facebook
+          <GoogleIcon />
+          <span>Google</span>
         </Button>
       </div>
-
       {/* Divider "Or continue with" */}
       <div className="relative my-5">
         <div className="absolute inset-0 flex items-center" aria-hidden="true">

@@ -20,14 +20,174 @@ export class UsersService {
   constructor(private prisma: PrismaService, private azureStorageService: AzureStorageService, // Inject AzureStorageService
   ) { }
 
-  async findAll() {
-    return this.prisma.user.findMany({
+
+  async toggleStatus(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id }
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        isActive: !user.isActive
+      }
+    });
+  }
+
+
+  async findAll(filters?: {
+    searchTerm?: string;
+    userType?: string;
+    accountStatus?: string;
+    sortOrder?: 'asc' | 'desc';
+    page?: number;
+    pageSize?: number;
+  }) {
+    const {
+      searchTerm = '',
+      userType = 'All Users',
+      accountStatus = 'All Status',
+      sortOrder = 'desc',
+      page = 1,
+      pageSize = 5
+    } = filters || {};
+
+    // Build where clause
+    const whereClause: any = {};
+
+    // Search term filter
+    if (searchTerm) {
+      whereClause.OR = [
+        {
+          email: {
+            contains: searchTerm,
+            mode: 'insensitive'
+          }
+        },
+        {
+          administrator: {
+            firstName: {
+              contains: searchTerm,
+              mode: 'insensitive'
+            }
+          }
+        },
+        {
+          administrator: {
+            lastName: {
+              contains: searchTerm,
+              mode: 'insensitive'
+            }
+          }
+        },
+        {
+          client: {
+            firstName: {
+              contains: searchTerm,
+              mode: 'insensitive'
+            }
+          }
+        },
+        {
+          client: {
+            lastName: {
+              contains: searchTerm,
+              mode: 'insensitive'
+            }
+          }
+        },
+        {
+          serviceProvider: {
+            firstName: {
+              contains: searchTerm,
+              mode: 'insensitive'
+            }
+          }
+        },
+        {
+          serviceProvider: {
+            lastName: {
+              contains: searchTerm,
+              mode: 'insensitive'
+            }
+          }
+        }
+      ];
+    }
+
+    // User type filter
+    if (userType !== 'All Users') {
+      switch (userType) {
+        case 'Admin':
+          whereClause.administrator = { isNot: null };
+          break;
+        case 'Client':
+          whereClause.client = { isNot: null };
+          break;
+        case 'Service Provider':
+          whereClause.serviceProvider = { isNot: null };
+          break;
+      }
+    }
+
+    // Account status filter
+    if (accountStatus !== 'All Status') {
+      whereClause.isActive = accountStatus === 'Active';
+    }
+
+    // Get total count for pagination
+    const totalResults = await this.prisma.user.count({
+      where: whereClause
+    });
+
+    // Get users with filters
+    const users = await this.prisma.user.findMany({
+      where: whereClause,
       include: {
         administrator: true,
         client: true,
         serviceProvider: true,
       },
+      orderBy: {
+        createdAt: sortOrder
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize
     });
+
+    const mappedUsers = users.map(user => {
+      let role: any = 'CLIENT'; // Adjust based on your Role enum
+      let roleData = user[role];
+
+      if (user.administrator) {
+        role = Role.ADMINISTRATOR;
+        roleData = user.administrator;
+      } else if (user.client) {
+        role = Role.CLIENT;
+        roleData = user.client;
+      } else if (user.serviceProvider) {
+        role = Role.SERVICE_PROVIDER;
+        roleData = user.serviceProvider;
+      }
+
+
+      return {
+        ...user,
+        role,
+        roleData,
+      };
+    });
+
+    return {
+      users: mappedUsers,
+      totalResults,
+      currentPage: page,
+      totalPages: Math.ceil(totalResults / pageSize)
+    };
   }
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({
@@ -52,8 +212,28 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto, avatarFile?: Express.Multer.File) {
-    const { email, password, role, firstName, lastName, contactInfo, companyName, location } =
-      createUserDto;
+    const {
+      email,
+      password,
+      role,
+      firstName,
+      lastName,
+      contactInfo,
+      companyName,
+      location,
+      // New location fields from User entity
+      placeId,
+      governorate,
+      governorateAr,
+      delegation,
+      delegationAr,
+      city,
+      state,
+      country,
+      postalCode,
+      latitude,
+      longitude
+    } = createUserDto;
 
     const existingUser = await this.prisma.user.findUnique({
       where: { email },
@@ -71,7 +251,6 @@ export class UsersService {
     // Handle avatar upload if a file is provided
     if (avatarFile) {
       try {
-        // Use a folder related to the email for new registrations
         const folderPath = `avatars/user-email-${email.replace(/[^a-zA-Z0-9]/g, '_')}`;
         avatarUrl = await this.azureStorageService.uploadFile(
           avatarFile.buffer,
@@ -91,33 +270,70 @@ export class UsersService {
           data: {
             email,
             passwordHash,
-            avatarUrl, // This will be undefined if no avatar was uploaded
+            avatarUrl,
+            // Add new location fields
+            placeId,
+            governorate,
+            governorateAr,
+            delegation,
+            delegationAr,
+            city,
+            state,
+            country,
+            postalCode,
+            latitude,
+            longitude
           },
         });
 
         switch (role) {
           case Role.ADMINISTRATOR:
             await prisma.administrator.create({
-              data: { userId: user.id, firstName, lastName, contactInfo },
+              data: {
+                userId: user.id,
+                firstName,
+                lastName,
+                contactInfo
+              },
             });
             break;
+
           case Role.CLIENT:
             await prisma.client.create({
-              data: { userId: user.id, firstName, lastName, contactInfo, location },
+              data: {
+                userId: user.id,
+                firstName,
+                lastName,
+                contactInfo,
+                location
+              },
             });
             break;
+
           case Role.SERVICE_PROVIDER:
             await prisma.serviceProvider.create({
-              data: { userId: user.id, firstName, lastName, companyName, contactInfo },
+              data: {
+                userId: user.id,
+                firstName,
+                lastName,
+                companyName,
+                contactInfo,
+                location
+              },
             });
             break;
+
           default:
             throw new BadRequestException('Invalid role specified');
         }
 
         return prisma.user.findUnique({
           where: { id: user.id },
-          include: { administrator: true, client: true, serviceProvider: true },
+          include: {
+            administrator: true,
+            client: true,
+            serviceProvider: true
+          },
         });
       });
 
